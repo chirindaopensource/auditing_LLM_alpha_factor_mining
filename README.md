@@ -313,6 +313,7 @@ def run_study(
     config: dict[str, Any],
     stages: Sequence[str],
     halt_on_failure: bool,
+    freeze_attestation: Optional[Mapping[str, Any]] = None,
 ) -> StudyResult: ...
 ```
 
@@ -326,6 +327,7 @@ def run_study(
 | `config` | The study configuration, a plain `dict`, including `_provenance_tags`. |
 | `stages` | Requested stage names; the pinned order is imposed. An unknown or dependency-unclosed request stamps every stage and runs none. |
 | `halt_on_failure` | `True` stops at the first halt and stamps later stages `PIPELINE_HALTED_AT_<stage>` (production mode); `False` continues and surfaces every halt (diagnostic mode). |
+| `freeze_attestation` | Optional external pre-registration record of the frozen list. Keys: `cohort_hash`, `freeze_timestamp`, `first_outcome_read_timestamp` (ISO-8601 with offset) and `source`. `cohort_hash = sha256(json.dumps({"ordered_id_list": ids}, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8") + b"\n")`, where `ids` are the screened, deduplicated ids ordered by `row_id`. It is verified, never trusted. Without it, `GATE.pre_outcome_immutability` is reported **not established** and the run is not admissible. In the Study Execution cell, supply it as `FREEZE_ATTESTATION.json` beside the input frames. |
 
 **Execution.** Thirteen stages, in the pinned `STAGE_ORDER`, through the `STAGE_CALLABLES` registry:
 
@@ -336,13 +338,14 @@ def run_study(
 
 A raised exception becomes a halt naming the exception class and message. Writes land beneath `ACCEPTANCE_SCRATCH_DIR` when it is set, otherwise under a fresh temporary directory. Task 8 reads `study_revised_inputs_20261111_143538.md` from the working directory to look up the paper's comparison values, and refuses to run without it.
 
-**Returns.** A frozen `StudyResult` with fifteen fields:
+**Returns.** A frozen `StudyResult` with twenty fields (fifteen original, five added by the remediation):
 
 - `stages_halt` and `stages_output`: the halt reason (or `None`) and the payload of every stage;
 - `cohort_hash` and `cohort_timestamp`: the freeze;
 - `score_register_v1`, `score_register_v2`, `factor_aggregates`, `ledger_primary`, `ledger_reverse`, `reference_means`, `dual_check_result` and `correction_partition`;
 - `admissibility_report`: the run mode, the P40, P41 and P45 blocks, the closures, the stage verdicts and the artifacts;
-- `claim_register` and `block_verdicts`: one verdict per P42 closure and P44 invariant.
+- `claim_register` and `block_verdicts`: one verdict per P42 closure and P44 invariant, plus the remediation gates `GATE.pre_outcome_immutability`, `GATE.metric_grain_recomputed` and `GATE.retention_recomputed`;
+- remediation fields: `ledger_evaluation_errors`, `correction_ledger` (per-record v1→v2 transitions), `metric_grain_audit` (§4), `retention_audit` (§5) and `dsl_coverage_report`.
 
 **It raises** `TypeError` on a mistyped argument or a malformed stage result. Stage exceptions are never swallowed: they become recorded halts.
 
@@ -354,6 +357,21 @@ Every task has its own orchestrator, which runs independently of `run_study`. Tw
 - `run_task_16(scratch_dir, study_output_text, ...)` governs the claims of a study-output text and writes the redistributable deposit.
 
 [`key_callables_discussion.txt`](key_callables_discussion.txt) gives the inputs, processes, outputs and equations of all 16 orchestrators. [`inputs_discussion.txt`](inputs_discussion.txt) lists the imports that each of the 450 callables requires.
+
+## Remediation log (R1–R6)
+
+These corrections close the gaps found when the pipeline was checked against the paper's four admissibility gates. Each change is tagged `[REMEDIATION Rk]` in the code.
+
+| ID | Gate | Defect | Correction |
+|---|---|---|---|
+| R1 | Denominator completeness / provenance | The correction stage reported a partition from a hard-coded fixture (867/98/25, 56, 1). Its "unchanged records" check compared a register with its own copy, and its registry diff compared placeholder objects. | `versioned_correction` builds the v2 ledger from this run's registers. It first runs a registry diff on implementation fingerprints (only `if` may differ) and writes a write-once, hashed v1 archive that is re-verified after v2. It then re-evaluates **every** record, checks unchanged records **bit-identically**, writes a per-record v1→v2 transition ledger with exact closure identities, and reports the defect's selection consequence descriptively. Any record that still errors under v2 halts the stage. `run_task_13` is now a stand-alone dry-run fixture only. |
+| R2 | Denominator completeness | Every exception was caught and the record silently became "insufficient". Support was read from input columns, and unknown *variables* were not checked. | A four-outcome evaluator assigns each record exactly one of: text absent, statically unsupported (operator / variable / signature / parse), `evaluation_error` (logged with exception class, message and traceback hash), or evaluated. The v1 ledger carries `evaluation_error` as an explicit fourth state outside the precedence triples. The final ledger must be the three-state P04 ledger. P42 and Task 15 closures count the fourth state. |
+| R3 | Pre-outcome immutability | The first-read instant was `now() + 1 day`, so freeze < first read held by construction. | Optional `freeze_attestation` (`cohort_hash`, `freeze_timestamp`, `first_outcome_read_timestamp`, `source`). The hash must be reproduced, the freeze must come strictly before the first read, neither instant may be in the future, and the source must be named. The score stage re-hashes the list it scores and measures the first read. `GATE.pre_outcome_immutability` holds only when an attestation is verified **and** the in-run order is measured. It feeds G4 and `admissible`. |
+| R4 | Metric grain / denominator | `collector_a` and `collector_b` were never read, so 2.227 / 2.433 existed only as configuration targets. The §5 IS-rule count came from a supplied flag, and the sign comparison misaligned on duplicate ids. | `recompute_metric_grain_section4` establishes each collector's grain from its rows (kept-candidate vector vs. positive per-round maxima) and recomputes means, extrema, denominators, anomaly rounds and keep decisions per round. `recompute_retention_section5` reduces both artifacts to expression level and recomputes the partition, the sign censuses, the conditional rates and the IS rule from IS metrics (undeterminable ids are counted, never imputed). Gates `GATE.metric_grain_recomputed` (G1) and `GATE.retention_recomputed` (G2) record the result. |
+| R5 | Execution provenance | An 8-operator, 4-variable DSL could not evaluate a realistic cohort. | The `[I]` registry is extended to 23 operators (adds `add`, `mul`, `abs`, `log`, `sign`, `ts_sum/std/max/min/corr`, `rank`, `gt/lt/ge/le`), with scalar operands and `open/high/low` variables. A static support classifier and `coverage_report_task_7` disclose every operator, variable or signature the registry does not cover. Fixes `parse_records_task_7` index misalignment. |
+| R6 | Metric grain | The v1 emulator raised for every panel condition, and ±inf signals were eligible in Task 9 but rejected by Task 12. | The v1 defect fires only when the condition is a panel and the true branch is a scalar. A panel true branch delegates to the v2 elementwise semantics, so those records are bit-identical. Non-finite signal and label cells are ineligible in both implementations (`NONFINITE_VALUE_CONVENTION_TASK_9`). |
+
+**What remains true.** The registry is a public reconstruction, not the paper's proprietary evaluator. The paper's figures stay comparison values. Without a genuine external freeze attestation, the run reports the pre-outcome immutability gate as **not established**.
 
 ## Prerequisites
 
@@ -2088,6 +2106,8 @@ Block verdicts: 32 of 32 hold
 ```
 
 Reading the output:
+
+> **Remediation note (R1–R6).** The outputs recorded below come from the notebook *before* the remediation. Since then, `correction_partition` is computed from this run's own v1/v2 registers: the fixture route has been removed, and Step 6's recount is what the correction stage itself reports. The v1 ledger carries an explicit `evaluation_error` outcome. The extended DSL now supports the 25 synthetic "unsupported" expressions. Pass `freeze_attestation` to `run_study`, or the pre-outcome immutability gate is reported as not established and the run is not admissible. See the remediation log in the notebook and the README.
 
 - **Every stage passed** and every P42/P44 closure holds, so the run reports `PRODUCTION` and `admissible=True`.
 - **The ledger** under the primary precedence is 770 scorable, 252 insufficient and 25 unsupported, with $770 + 252 + 25 = 1047$: no record is dropped and none is assigned a zero score. The 57 conditionals that v1 cannot evaluate sit in the insufficient arm. Under the reversed precedence the unsupported records move to insufficient.
