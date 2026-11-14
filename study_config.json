@@ -1,0 +1,1934 @@
+{
+  "_header": [
+    "Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort",
+    "Reanalysis -- Study Configuration",
+    "This file is the complete STUDY_CONFIG dictionary consumed by the",
+    "top-level orchestrator `run_study` (Task 14) of the implementation of",
+    "\"Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort",
+    "Reanalysis\" by Yufeng He (2026). It is converted leaf for leaf from the",
+    "notebook's configuration literal: every section P00 to P45, the raw",
+    "input schemas and the verification targets.",
+    "Provenance tags (kept as trailing comments in config.yaml; taken from STUDY_CONFIG's parallel",
+    "\"_provenance_tags\" dictionary, which is data in the notebook):",
+    "• [S]   stated in the manuscript",
+    "• [D]   derived from, or implied by, the manuscript",
+    "• [R]   reproduction choice (may move published values; disclosed)",
+    "• [I]   illustrative only -- not in the manuscript; never a paper finding",
+    "• UNDISCLOSED  acknowledged absence in the manuscript",
+    "Conventions:",
+    "• Exponent floats are written as 1.0e-12 (YAML 1.1 reads 1e-12 as text).",
+    "• P42_ARITHMETIC_CLOSURES.sum_closures_rounds_to_totals is a Python set",
+    "in the notebook and is written here as a sorted JSON array (JSON has no set type).",
+    "• Published figures are comparison targets, never computed values.",
+    "Paper Reference:",
+    "He, Y. (2026). Auditing LLM Alpha-Factor Mining: Metric Provenance and",
+    "Full-Cohort Reanalysis. arXiv preprint arXiv:2610.29500.",
+    "https://arxiv.org/abs/2610.29500",
+    "Author: CS Chirinda",
+    "License: MIT",
+    "Version: 1.0.0"
+  ],
+  "STUDY_CONFIG": {
+    "P00_META": {
+      "title": "Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort Reanalysis",
+      "author": "Yufeng He",
+      "affiliation": "The University of Hong Kong",
+      "evidence_timeframe": "March 2026 run reports",
+      "document_class": "article, 10pt, twocolumn",
+      "targets": {
+        "T1": "Level-1 metric-grain and provenance diagnosis",
+        "T2": "Level-2 outcome-conditioned retention identification",
+        "T3": "Level-3 full-cohort public reanalysis",
+        "T4": "Historical run reconstruction -- IMPOSSIBLE"
+      },
+      "claim_type_by_target_REVISED": {
+        "T1": "REPLICATION_EXACT__only_with_private_reports",
+        "T2": "REPLICATION_EXACT__only_with_private_checkpoint_and_catalog",
+        "T3": "METHODOLOGY_REPRODUCTION__result_reproduction_unavailable",
+        "T4": "RECONSTRUCTION_ONLY"
+      },
+      "provenance_tags": [
+        "[S]",
+        "[D]",
+        "[R]",
+        "[I]",
+        "UNDISCLOSED"
+      ],
+      "fidelity_declarations": {
+        "D1_api_keys_absent_from_paper": true,
+        "D2_prompts_absent_from_paper": true,
+        "D3_inference_settings_absent_from_paper": true,
+        "D4_zero_neural_networks_in_paper": true,
+        "D5_zero_figures_zero_plots_four_tables": true
+      },
+      "config_self_provenance_REVISED": {
+        "config_self_hash_algorithm": "SHA-256",
+        "config_self_hash_coverage": "SERIALISED_CANONICAL_JSON_OF_THIS_DICT",
+        "config_self_timestamp_required": true,
+        "config_self_timestamp_timezone": "Asia/Shanghai"
+      }
+    },
+    "raw_input_schemas": {
+      "FILES": {
+        "row_count": 80,
+        "primary_key": [
+          "file_id"
+        ],
+        "columns": {
+          "file_id": "string",
+          "stock_code": "string",
+          "stock_rank": "Int64",
+          "adjustment": "string",
+          "row_count": "Int64",
+          "byte_hash": "string",
+          "content_length_bytes": "Int64",
+          "schema_fingerprint": "string",
+          "date_min": "datetime64[ns]",
+          "date_max": "datetime64[ns]",
+          "requested_stock_code": "string",
+          "requested_date_min": "datetime64[ns]",
+          "requested_date_max": "datetime64[ns]",
+          "requested_adjustment": "string",
+          "response_truncated": "boolean",
+          "hash_ok": "boolean",
+          "date_id_ok": "boolean",
+          "stock_id_ok": "boolean",
+          "adjustment_id_ok": "boolean",
+          "quantity_agreement_ok": "boolean",
+          "status_agreement_ok": "boolean",
+          "verified": "boolean",
+          "retrieved": "datetime64[ns, Asia/Shanghai]",
+          "redistribution_flag": "boolean"
+        },
+        "attrs_header_fields": {
+          "provider": "string",
+          "provider_version": "string",
+          "universe_label": "string",
+          "universe_order_fixed": "bool",
+          "universe_disclosed": "bool",
+          "date_count": "Int64",
+          "file_count": "Int64",
+          "masked_cell_count": "Int64",
+          "retrieval_batch_timestamp": "datetime64[ns, Asia/Shanghai]",
+          "retrieval_coherence_window": "string",
+          "config_self_hash": "string",
+          "redistribution_grant": "bool"
+        },
+        "verified_conjunction_semantics": "KLEENE_FAIL_FAST"
+      },
+      "UNADJUSTED_BARS": {
+        "estimated_row_count": 29080,
+        "primary_key": [
+          "stock_code",
+          "trade_date"
+        ],
+        "uniqueness_halt_assertion": true,
+        "columns": {
+          "stock_code": "string",
+          "trade_date": "datetime64[ns]",
+          "adjustment": "string",
+          "open": "float64",
+          "high": "float64",
+          "low": "float64",
+          "close": "float64",
+          "volume": "Int64",
+          "amount": "float64",
+          "quantity": "Int64",
+          "tradable": "boolean",
+          "tradestatus_raw": "Int64",
+          "byte_hash": "string"
+        },
+        "ingest_procedure": {
+          "volume_ingest_dtype": "float64",
+          "volume_integrality_assertion": "ABS_V_MINUS_ROUND_V_EQ_ZERO",
+          "volume_cast_after_assertion": "Int64"
+        }
+      },
+      "ADJUSTED_BARS": {
+        "estimated_row_count": 29080,
+        "primary_key": [
+          "stock_code",
+          "trade_date"
+        ],
+        "feature_path_embargo": true,
+        "uniqueness_halt_assertion": true,
+        "columns": {
+          "stock_code": "string",
+          "trade_date": "datetime64[ns]",
+          "adjustment": "string",
+          "open_adj": "float64",
+          "high_adj": "float64",
+          "low_adj": "float64",
+          "close_adj": "float64",
+          "adj_factor": "float64",
+          "adj_factor_segment_id": "Int64",
+          "quantity": "Int64",
+          "tradable": "boolean",
+          "tradestatus_raw": "Int64",
+          "byte_hash": "string"
+        }
+      }
+    },
+    "P01_LABEL_EQUATION_PARAMETERS": {
+      "governs": "Eq. (1): y_{i,t} = P^adj_{i,t+5} / P^adj_{i,t} - 1",
+      "equation_id": "Eq. (1)",
+      "equation_is_numbered": true,
+      "equation_count_in_paper": 1,
+      "unnumbered_display_equations_in_paper": 0,
+      "forward_horizon_rows": 5,
+      "step_index_kind": "TRADING_CALENDAR_ROW_OFFSET",
+      "step_index_direction": "FORWARD",
+      "return_form": "SIMPLE",
+      "numerator_price_field": "close_adj",
+      "denominator_price_field": "close_adj",
+      "price_view_permitted": "provider_adjusted",
+      "price_view_embargoed_from_features": true,
+      "endpoint_finite_required": true,
+      "endpoint_strictly_positive_required": true,
+      "endpoint_tradable_required": true,
+      "endpoint_tradable_source_field": "tradable",
+      "endpoint_row_indices": "i AND i+5",
+      "both_endpoints_checked": true,
+      "undefined_label_representation": null,
+      "label_window_start_year": 2024,
+      "label_window_end_year": 2025,
+      "label_window_trading_rows": 485,
+      "terminal_unlabelled_rows": 5,
+      "label_available_rows": 480,
+      "total_calendar_rows": 727,
+      "is_total_return_claim": false,
+      "is_executable_pnl_claim": false,
+      "transaction_cost_model": null,
+      "borrow_cost_model": null,
+      "capacity_model": null,
+      "dividend_reinvestment_model": null
+    },
+    "P02_RANK_IC_PARAMETERS": {
+      "governs": "daily rank-IC = Pearson( rank_avg(f_{.,t}), rank_avg(y_{.,t}) )",
+      "statistic_definition": "Pearson correlation of average-tie cross-sectional ranks",
+      "statistic_is_typeset_in_paper": false,
+      "correlation_implementation": "PEARSON_ON_RANKS",
+      "pearson_of_midranks_equals_spearman_with_ties": true,
+      "tie_method": "AVERAGE_MID_RANK",
+      "ranking_orientation": "ASCENDING",
+      "ranking_applied_per_date": true,
+      "monotone_invariance_exploited": true,
+      "min_eligible_stocks_per_date": 5,
+      "min_distinct_signal_values": 3,
+      "min_distinct_signal_values_status": "DIAGNOSTIC_CONVENTION",
+      "min_distinct_label_values": 2,
+      "eligible_stock_conditions": [
+        "factor_value_available",
+        "label_value_available",
+        "stock_day_tradable",
+        "stock_day_not_masked"
+      ],
+      "date_gate_evaluated_jointly": true,
+      "insufficient_date_gate_result": null,
+      "distinct_value_counting_set": "ELIGIBLE_STOCKS_FACTOR_AND_LABEL_AVAILABLE",
+      "distinct_value_counting_set_source": "UNSPECIFIED IN MANUSCRIPT__[R]",
+      "factor_history_requirement": "NATURAL__ts_operators_undefined_before_window",
+      "mean_sd_ratio_is_annualised": false,
+      "mean_sd_ratio_is_trading_sharpe": false,
+      "sd_definition": "UNDISCLOSED",
+      "cross_factor_significance_test": null,
+      "label_overlap_acknowledged": true,
+      "per_factor_independence_assumed": false
+    },
+    "P03_FACTOR_AGGREGATION_PARAMETERS": {
+      "governs": "mean signed rank-IC over T_f, subject to |T_f| >= 20",
+      "min_valid_dates_for_scorability": 20,
+      "valid_date_set_definition": "T_f = { t : date_gates_pass AND IC_{f,t} defined }",
+      "aggregation_operator": "ARITHMETIC_MEAN",
+      "signed_preservation": true,
+      "full_coverage_target_dates": 480,
+      "partial_coverage_handling": "RETAIN_AND_FLAG",
+      "factors_with_full_coverage": 835,
+      "factors_with_partial_coverage": 88,
+      "sign_classification_precision": "FULL_FLOAT_PRECISION_NEAR_ZERO_DIAGNOSTIC",
+      "near_zero_absolute_threshold": 1e-12
+    },
+    "P04_LEDGER_PARAMETERS": {
+      "governs": "923 scorable + 99 insufficient + 25 unsupported = 1,047",
+      "denominator_total": 1047,
+      "state_assignment_rule": "EXACTLY_ONE_PER_RECORD",
+      "states": [
+        "scorable",
+        "insufficient",
+        "unsupported"
+      ],
+      "state_precedence": [
+        "unsupported",
+        "insufficient",
+        "scorable"
+      ],
+      "state_precedence_source": "NOT_STATED_IN_PAPER__[R]",
+      "state_precedence_consequence": "REVERSING_THE_PRECEDENCE_CHANGES_THE_(923,99,25)_TRIPLE",
+      "unsupported_condition": "operator_or_variable_absent_from_public_implementation",
+      "unsupported_count": 25,
+      "insufficient_condition": "supported AND |T_f| < 20",
+      "insufficient_count": 99,
+      "scorable_condition": "supported AND |T_f| >= 20",
+      "scorable_count": 923,
+      "non_scorable_count": 124,
+      "missing_result_imputation": null,
+      "retain_non_scorable_in_denominator": true,
+      "sign_partition_counts": {
+        "positive": 671,
+        "negative": 252
+      },
+      "median_mean_rank_ic": 0.0148,
+      "distribution_mean_reported": false,
+      "distribution_sd_reported": false,
+      "conservation_invariant": "scorable + insufficient + unsupported == denominator_total"
+    },
+    "P05_EVALUATOR_VERSIONING_PARAMETERS": {
+      "version_1_defect": "conditional operator interprets a panel as one Boolean when the true branch is scalar",
+      "version_1_error_count": 57,
+      "error_classification": "NUMERICAL_ERROR",
+      "version_2_change": "scalar broadcasting",
+      "version_2_semantics_constraint": "PRESERVE_EXISTING_ELEMENTWISE_CONDITIONAL_SEMANTICS",
+      "version_1_preserved_unmodified": true,
+      "re_evaluation_scope": "ALL_1047",
+      "failure_only_rerun_permitted": false,
+      "unchanged_record_count": 990,
+      "unchanged_verification_mode": "DIRECT_COMPARISON_NOT_ASSUMPTION",
+      "newly_scorable_after_fix": 56,
+      "residual_insufficient_after_fix": 1,
+      "defect_selection_consequence_quantified": false,
+      "defect_selection_consequence_self_audit": "RECOMPUTE_MEAN_RANK_IC_OF_THE_56_VS_THE_867; REPORT_WHETHER_THE_DEFECT_DESTROYED_HIGH_OR_LOW_SIGNAL"
+    },
+    "P06_COHORT_ADMISSION_PARAMETERS": {
+      "governs": "3,114 preserved rows -> 1,047 frozen IDs under the stated IS screen",
+      "source_row_count": 3114,
+      "cohort_size": 1047,
+      "sharpe_min": 2.0,
+      "sharpe_comparator": ">=",
+      "fitness_min": 0.0,
+      "fitness_comparator": ">=",
+      "turnover_max": 500.0,
+      "turnover_comparator": "<=",
+      "boundary_convention": "INCLUSIVE_AS_STATED__EXECUTED_STRICTNESS_UNBOUND",
+      "screen_scope": "IS_ONLY",
+      "workflow_specific_gates_named": [
+        "IC",
+        "complexity",
+        "pool_score",
+        "correlation"
+      ],
+      "workflow_specific_gates_enabled": "UNDISCLOSED",
+      "identical_effective_policy_established": false,
+      "deduplication_key": "CANONICAL_AST_IDENTITY",
+      "deduplication_canonicalization": {
+        "parse_to_ast": true,
+        "normalise_whitespace": true,
+        "apply_commutativity": "symmetric_operators_only",
+        "push_negation_through": false,
+        "source": "NOT_STATED_IN_PAPER__[R]"
+      },
+      "deduplication_timing": "BEFORE_FREEZE_USING_IS_DATA_ONLY"
+    },
+    "P07_FREEZE_PROTOCOL_PARAMETERS": {
+      "freeze_before_any_scoring": true,
+      "freeze_timestamp_required": true,
+      "freeze_timestamp_timezone_aware": true,
+      "freeze_hash_algorithm": "SHA-256",
+      "freeze_hash_covers": "ORDERED_ID_LIST",
+      "freeze_serialization_format": "TWO_DECIMAL_PER_SLOT_CANONICAL_JSON",
+      "freeze_serialization_bytes_encoding": "utf-8",
+      "freeze_serialization_line_terminator": "LF",
+      "freeze_serialization_id_ordering": "BY_COHORT_RANK_ASCENDING",
+      "ids_immutable_after_freeze": true,
+      "no_id_removed_on_score": true,
+      "all_ids_receive_outcome": true,
+      "scope_disclaimers": {
+        "is_census_of_generated_candidates": false,
+        "is_historically_blind_holdout": false,
+        "is_matched_replay_of_keep_totals": false
+      },
+      "universe_constituents_disclosed": false,
+      "is_screen_window_disclosed": false
+    },
+    "P08_CLEAN_OOS_PROTOCOL_PARAMETERS": {
+      "status": "PENDING",
+      "requirements_ordered": [
+        "recover_and_hash_complete_pre_oos_pool",
+        "pre_specify_is_only_screen",
+        "deduplicate_using_is_data_only",
+        "freeze_expression_list_before_oos_access",
+        "checkpoint_every_response",
+        "preserve_every_outcome_and_error_regardless_of_sign"
+      ],
+      "requirement_ordering_load_bearing": true,
+      "sign_filter_permitted": false,
+      "success_only_logging_permitted": false,
+      "per_response_checkpoint_required": true,
+      "claim_restoration_gated_on_completion": true,
+      "acceptance_criteria_published": false
+    },
+    "P09_LEVEL1_AUDIT_PARAMETERS": {
+      "governs": "§4: metric population, denominator, taxonomy, attribution, state",
+      "missing_cell_encoding": "UNAVAILABLE_AT_STAGE",
+      "harmonised_denominator": "rounds",
+      "rounds_per_run": 20,
+      "sole_legitimate_cross_run_statistic": "keep_decisions / rounds",
+      "pipeline_collector_population": "KEPT_CANDIDATE_VECTOR",
+      "swarm_collector_population": "POSITIVE_PER_ROUND_MAXIMA",
+      "mean_recomputation_targets": {
+        "pipeline": {
+          "n": 67,
+          "expected_mean": 2.227,
+          "expected_display": 2.23
+        },
+        "swarm": {
+          "n": 20,
+          "expected_mean": 2.433,
+          "expected_display": 2.43
+        }
+      },
+      "display_precision_decimals": 3,
+      "extremum_populations": {
+        "pipeline_kept_max": 2.449,
+        "pipeline_round_summary_max": 3.171,
+        "swarm_round_max": 4.206,
+        "swarm_max_need_not_be_kept": true
+      },
+      "denominator_constructs": {
+        "pipeline_234": "SUCCESS_ONLY",
+        "pipeline_289": "POST_EXECUTION_COUNT",
+        "swarm_816": "RETURNED_INCL_FAILURES_AND_SIGN_FLIPS",
+        "swarm_887": "PRE_EXECUTION_GENERATION_COUNT",
+        "common_denominator_exists": false
+      },
+      "pipeline_implied_failure_count": 55,
+      "anomaly_rounds_to_enumerate": 6,
+      "category_taxonomy_pipeline": 4,
+      "category_taxonomy_swarm_configured": 12,
+      "category_taxonomy_swarm_productive": 2,
+      "category_comparison_defined": false,
+      "attribution_residuals": {
+        "S_A": {
+          "run_counter": 20,
+          "leaderboard": 8,
+          "residual": 12
+        },
+        "S_B": {
+          "run_counter": 11,
+          "leaderboard": 9,
+          "residual": 2
+        }
+      },
+      "residual_may_be_recorded_as_zero": false,
+      "residual_cause_reconstructed": false,
+      "state_provenance_flags": {
+        "initial_pool_snapshot_taken": false,
+        "reset_binding_between_arms": false,
+        "execution_order": [
+          "P",
+          "S"
+        ],
+        "executed_commit_bound_to_report": false
+      },
+      "controlled_experiment_established": false
+    },
+    "P10_RETENTION_AUDIT_PARAMETERS": {
+      "governs": "checkpoint (2,016) vs catalog (1,837): 368 / 189 / 1,648",
+      "preliminary_screen_strictness": "LOOSER_THAN_STATED_IS_RULE",
+      "preliminary_screen_predicate": "UNDISCLOSED",
+      "write_condition": "oos_sharpe > 0",
+      "write_disposition_on_fail": "DROP_BEFORE_WRITE",
+      "checkpoint_size": 2016,
+      "checkpoint_negative_rows": 368,
+      "catalog_size": 1837,
+      "catalog_non_positive_rows": 0,
+      "catalog_rows_passing_stated_is_rule": 1037,
+      "partition_keys": [
+        "checkpoint_only",
+        "catalog_only",
+        "intersection"
+      ],
+      "checkpoint_only_count": 368,
+      "checkpoint_only_all_negative": true,
+      "catalog_only_count": 189,
+      "catalog_only_all_positive": true,
+      "intersection_count": 1648,
+      "intersection_sign_disagreements": 0,
+      "sign_alignment_is_deterministic": true,
+      "identification_statement": [
+        "P(sign == negative | checkpoint_only) == 1.000   # 368/368",
+        "P(sign == positive | catalog_only)    == 1.000   # 189/189",
+        "P(sign disagreement | intersection)   == 0.000   # 0/1648"
+      ],
+      "catalog_source_superset_of_checkpoint": true,
+      "catalog_source_superset_reason": "|R \\ C| = 189 > 0 implies the writer's source pool strictly contains the checkpoint",
+      "catalog_source_pool_size": "UNDISCLOSED",
+      "identity_relation_must_match_cohort": true,
+      "closure_tests": [
+        "2016 == 368 + 1648",
+        "1837 == 189 + 1648"
+      ]
+    },
+    "P11_ACQUISITION_PARAMETERS": {
+      "governs": "the 40 x 727 x 2 snapshot and its six integrity checks",
+      "provider": "BaoStock",
+      "provider_version": "0.9.3",
+      "provider_url": "UNDISCLOSED",
+      "provider_sdk_license_is_redistribution_grant": false,
+      "universe_size": 40,
+      "universe_label": "40-stock convenience universe",
+      "universe_ordering": "FIXED_AND_IDENTICAL_ACROSS_VIEWS",
+      "universe_constituents_disclosed": false,
+      "universe_constitution_source": "UNSPECIFIED IN MANUSCRIPT",
+      "trading_date_count": 727,
+      "date_span_years": [
+        2023,
+        2024,
+        2025
+      ],
+      "calendar_year_row_counts": {
+        "2023": 242,
+        "2024": 242,
+        "2025": 243
+      },
+      "adjustment_views": [
+        "unadjusted",
+        "provider_adjusted"
+      ],
+      "file_count": 80,
+      "rows_per_bar_file": 727,
+      "feature_data_roles": [
+        "nominal_price",
+        "shares",
+        "nominal_traded_amount"
+      ],
+      "label_data_roles": [
+        "provider_adjusted_close"
+      ],
+      "adjusted_view_permitted_in_features": false,
+      "shared_fields_across_views": [
+        "quantity",
+        "tradable",
+        "tradestatus_raw"
+      ],
+      "view_identity_checks": [
+        "byte_hash",
+        "date_identity",
+        "stock_identity",
+        "adjustment_identity",
+        "shared_quantity_field",
+        "shared_trading_status_field"
+      ],
+      "require_all_files_pass": true,
+      "freeze_then_verify_then_score": true,
+      "retrieval_coherence_window": "<= 1 trading day",
+      "retrieval_coherence_assertion": "MAX(retrieved) - MIN(retrieved) <= ONE_TRADING_DAY",
+      "adjustment_factor_acquired": true,
+      "adjustment_factor_constancy_test": "P_adj_div_P_nom_constant_per_segment",
+      "adjustment_factor_jump_at_corporate_action_only": true,
+      "adjustment_factor_is_paper_stated": false
+    },
+    "P12_MASKING_PARAMETERS": {
+      "masked_cell_count": 2,
+      "masked_value_representation": null,
+      "forward_fill_permitted": false,
+      "backward_fill_permitted": false,
+      "interpolation_permitted": false,
+      "stock_prefix_substitution_permitted": false,
+      "stock_count_after_masking": 40,
+      "file_count_after_masking": 80,
+      "survivorship_by_convenience_permitted": false,
+      "missing_observation_as_zero_permitted": false
+    },
+    "P13_DSL_EVALUATOR_INTERFACE": {
+      "dsl_kind": "functional price/volume DSL",
+      "grammar_published": false,
+      "grammar": "UNDISCLOSED",
+      "terminal_field_classes": [
+        "nominal price",
+        "shares",
+        "nominal traded amount",
+        "trading status"
+      ],
+      "conditional_operator_semantics": "ELEMENTWISE",
+      "sign_flip_supported": true,
+      "sign_flip_semantics": "e -> -e",
+      "operator_families_observed": {
+        "time_series": [
+          "ts_mean",
+          "ts_rank",
+          "delta"
+        ],
+        "arithmetic": [
+          "div",
+          "sub",
+          "neg"
+        ],
+        "conditional": "elementwise conditional"
+      },
+      "operator_status_note": "NAMES_ARE_ILLUSTRATIVE__[I]",
+      "public_implementation_support_gap": 25,
+      "unsupported_records_retained_in_denominator": true,
+      "unsupported_identifiability": "REQUIRES_GRAMMAR__UNDISCLOSED",
+      "native_metrics": [
+        "sharpe",
+        "fitness",
+        "turnover",
+        "IC",
+        "complexity",
+        "pool_score",
+        "correlation"
+      ],
+      "native_semantics_interchangeable_with_public": false,
+      "versioned_correction_applies_to_dsl_operator": "conditional"
+    },
+    "P14_PIPELINE_ARCHITECTURE_PARAMETERS": {
+      "rounds": 20,
+      "roles": {
+        "researcher": {
+          "emits": "search direction",
+          "output_vocabulary_size": 4
+        },
+        "implementor": {
+          "emits": "DSL expressions",
+          "invokes_evaluator_internally": true
+        },
+        "reviewer": {
+          "emits": "next-step suggestion",
+          "llm_backed": true,
+          "fallback": "deterministic_rule",
+          "fallback_rate_reported": false
+        },
+        "selector": {
+          "type": "programmatic",
+          "llm_permits_admission": false
+        }
+      },
+      "category_label_count": 4,
+      "generator_model_label": "Claude Opus 4.6",
+      "label_source": "template_hardcoded",
+      "verified_request_graph_recovered": false,
+      "is_model_quality_ranking": false,
+      "evaluator_shared_with_swarm": true
+    },
+    "P15_SWARM_ARCHITECTURE_PARAMETERS": {
+      "rounds": 20,
+      "specialist_count": 20,
+      "category_count": 12,
+      "productive_labels_with_keeps": 2,
+      "specialist_to_category_map": "UNDISCLOSED",
+      "orchestrator_implementation_class": "UNDISCLOSED",
+      "adaptive_allocation_weights": {
+        "enabled": true,
+        "dimensionality": "UNDISCLOSED",
+        "initialisation": "UNDISCLOSED",
+        "update_rule": "UNDISCLOSED",
+        "update_timescale": "FAST"
+      },
+      "sign_flip_module": {
+        "enabled": true,
+        "semantics": "e -> -e",
+        "attribution_logged": false,
+        "attribution_reconstructed": false
+      },
+      "prompt_revision": {
+        "mode": "proposal",
+        "applied": "UNDISCLOSED",
+        "periodicity": "UNDISCLOSED",
+        "timescale": "SLOW",
+        "loop_closed_established": false
+      },
+      "two_timescale_control_present": true,
+      "specialist_model_labels": {
+        "S_A": "Claude Sonnet 4.5",
+        "S_B": "Claude Opus 4.6"
+      },
+      "label_source": "template_hardcoded",
+      "verified_request_graph_recovered": false,
+      "evaluator_shared_with_pipeline": true,
+      "dsl_shared_with_pipeline": true
+    },
+    "P16_COMPARISON_HARNESS_PARAMETERS": {
+      "execution_order": [
+        "P",
+        "S"
+      ],
+      "initial_pool_snapshot_taken": false,
+      "initial_pool_hash_available": false,
+      "reset_binding_between_arms": false,
+      "compound_system_executed": true,
+      "budgets_equalised": false,
+      "budget_dimensions_to_equalise": [
+        "generations",
+        "evaluations",
+        "tokens",
+        "wall_clock"
+      ],
+      "executed_commit_bound_to_report": false,
+      "seeds_reported": "UNDISCLOSED",
+      "more_seeds_would_repair": false,
+      "arm_state_independence_established": false,
+      "state_inheritance_mechanism": "UNDISCLOSED",
+      "repair_prerequisites_ordered": [
+        "align_accounting_stages",
+        "align_selection_policies",
+        "bind_initial_state",
+        "bind_resource_budgets"
+      ],
+      "provenance_precedes_scale": true
+    },
+    "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS": {
+      "neural_network_training_present": false,
+      "layers": "NOT_APPLICABLE",
+      "parameters_trained": 0,
+      "loss_function": null,
+      "optimiser": null,
+      "learning_rate": null,
+      "epochs": null,
+      "gradients_computed": false,
+      "total_rounds_per_arm": 20,
+      "evaluations_per_round": "UNDISCLOSED",
+      "generations_cap": "UNDISCLOSED",
+      "evaluations_cap": "UNDISCLOSED",
+      "token_cap": "UNDISCLOSED",
+      "wall_clock_cap": "UNDISCLOSED",
+      "allocation_weight_update_rule": "UNDISCLOSED",
+      "prompt_revision_periodicity": "UNDISCLOSED",
+      "early_stopping": "UNDISCLOSED"
+    },
+    "P18_VERIFICATION_PARAMETERS": {
+      "files_to_verify": 80,
+      "spot_check_cell_count": 9,
+      "spot_check_cell_selection_timing": "A_PRIORI",
+      "spot_check_independence": "SEPARATE_TIE_RANKING_PEARSON_IMPLEMENTATION",
+      "spot_check_pass_requirement": "9_of_9",
+      "spot_check_pass_count_reported": false,
+      "spot_check_targets_instrument_not_results": true,
+      "identity_comparison_mode": "BIT_IDENTICAL_OR_DECLARED_TOLERANCE",
+      "tolerance_audit_recomputation": "THREE_DECIMALS",
+      "tolerance_audit_recomputation_basis": "PAPER_DISPLAY_PRECISION",
+      "tolerance_nine_cell": "UNDISCLOSED",
+      "tolerance_nine_cell_source": "NOT_STATED_IN_PAPER",
+      "reverification_at_study_close": true
+    },
+    "P19_REFERENCE_PREREGISTRATION_PARAMETERS": {
+      "preregistered_before_outcome_computation": true,
+      "signs_selected_on_scores": false,
+      "report_all_regardless_of_sign": true,
+      "none_dropped_or_reoriented_post_hoc": true,
+      "promoted_to_profitability_claim": false,
+      "matched_sample_comparator_available": false,
+      "incremental_skill_estimated": false,
+      "valid_dates_per_reference": 480,
+      "same_snapshot_as_cohort": true,
+      "same_scoring_convention_as_cohort": true,
+      "signals": [
+        {
+          "id": "r1",
+          "name": "nominal close level",
+          "formula": "close",
+          "orientation": "as-is",
+          "horizon": null,
+          "target_mean_rank_ic": -0.0218
+        },
+        {
+          "id": "r2",
+          "name": "share volume",
+          "formula": "volume",
+          "orientation": "as-is",
+          "horizon": null,
+          "target_mean_rank_ic": 0.0234
+        },
+        {
+          "id": "r3",
+          "name": "nominal traded amount",
+          "formula": "amount",
+          "orientation": "as-is",
+          "horizon": null,
+          "target_mean_rank_ic": 0.0021
+        },
+        {
+          "id": "r4",
+          "name": "one-day nominal reversal",
+          "formula": "neg(close / lag(close, 1) - 1)",
+          "orientation": "negate",
+          "horizon": 1,
+          "target_mean_rank_ic": -0.0007
+        },
+        {
+          "id": "r5",
+          "name": "five-day nominal reversal",
+          "formula": "neg(close / lag(close, 5) - 1)",
+          "orientation": "negate",
+          "horizon": 5,
+          "target_mean_rank_ic": -0.0155
+        },
+        {
+          "id": "r6",
+          "name": "twenty-day nominal change",
+          "formula": "close / lag(close, 20) - 1",
+          "orientation": "as-is",
+          "horizon": 20,
+          "target_mean_rank_ic": 0.0229
+        }
+      ],
+      "signal_formula_status": "EQUIVALENCE_CLASS__PAPER_SPECIFIES_CONSTRUCT_IN_WORDS_ONLY",
+      "post_hoc_status_disclosed": true
+    },
+    "P20_CLAIM_CONTROLS": {
+      "architecture_ranking_permitted": false,
+      "profitability_claim_permitted": false,
+      "annualisation_permitted": false,
+      "trading_sharpe_labelling_permitted": false,
+      "significance_test_on_aggregate_permitted": false,
+      "oos_or_generalization_claim_permitted": false,
+      "incremental_agent_skill_claim_permitted": false,
+      "matched_sample_outperformance_permitted": false,
+      "total_return_claim_permitted": false,
+      "executable_pnl_claim_permitted": false,
+      "model_quality_ranking_permitted": false,
+      "backend_identity_claim_permitted": false,
+      "other_systems_implicated": false,
+      "imputed_zero_alpha_permitted": false,
+      "missing_outcome_omitted_from_denominator": false,
+      "residual_reported_as_zero": false,
+      "native_and_public_metrics_concatenated": false
+    },
+    "P21_LLM_CONFIGURATION": {
+      "llm_names_reported_as_labels_only": {
+        "pipeline_generator": {
+          "label": "Claude Opus 4.6",
+          "label_source": "template_hardcoded"
+        },
+        "swarm_S_A_specialists": {
+          "label": "Claude Sonnet 4.5",
+          "label_source": "template_hardcoded"
+        },
+        "swarm_S_B_specialists": {
+          "label": "Claude Opus 4.6",
+          "label_source": "template_hardcoded"
+        },
+        "pipeline_reviewer": {
+          "label": "UNDISCLOSED",
+          "label_source": "UNDISCLOSED"
+        },
+        "verified_backend_identity": false,
+        "request_graph_recovered": false
+      },
+      "llm_api_credentials": {
+        "api_key_env_var": "UNDISCLOSED_API_KEY_ENV_VAR",
+        "api_base_url": "UNDISCLOSED",
+        "auth_scheme": "UNDISCLOSED",
+        "api_key_literal_present": false
+      },
+      "llm_inference_settings": {
+        "temperature": "UNDISCLOSED",
+        "top_p": "UNDISCLOSED",
+        "top_k": "UNDISCLOSED",
+        "max_output_tokens": "UNDISCLOSED",
+        "sampling_seed": "UNDISCLOSED",
+        "stop_sequences": "UNDISCLOSED",
+        "retry_policy": "UNDISCLOSED",
+        "backoff_policy": "UNDISCLOSED",
+        "request_timeout_seconds": "UNDISCLOSED",
+        "context_assembly_rule": "UNDISCLOSED",
+        "response_parsing_rule": "UNDISCLOSED",
+        "determinism_guaranteed": false
+      },
+      "prompt_templates": {
+        "system_prompt": "UNDISCLOSED",
+        "user_prompt_template": "UNDISCLOSED",
+        "all_prompts_illustrative": true,
+        "consequence_if_used": "LABEL_ALL_OUTPUTS_NON_IDENTICAL",
+        "prompt_shape_illustrative_for": [
+          "researcher_system",
+          "implementor_system",
+          "reviewer_system",
+          "rule_fallback_contract",
+          "specialist_system",
+          "prompt_revision_system"
+        ]
+      }
+    },
+    "P22_RAW_SCHEMA_CONVENTIONS": {
+      "string_dtype_policy": "use 'string'/'object' NOT 'category' for identities",
+      "nullable_integer_dtype_policy": "use 'Int64' with pd.NA, NEVER int64 with a 0 sentinel",
+      "boolean_dtype_policy": "use nullable 'boolean' where a flag can be unknown",
+      "timestamp_dtype_policy": "datetime64[ns, Asia/Shanghai] for retrieval stamps",
+      "unavailable_value": null,
+      "prohibited_sentinels": [
+        0,
+        -1,
+        "",
+        "NA_FILL",
+        "n/a"
+      ],
+      "leakage_sentinel_field": "oos_sharpe"
+    },
+    "P23_SCHEMA_RUN_REPORT_TOTALS": {
+      "estimated_row_count": 3,
+      "column_schema": {
+        "run_id": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "rounds": {
+          "dtype": "Int64",
+          "src": "[S] 20 all arms"
+        },
+        "keep_decisions": {
+          "dtype": "Int64",
+          "src": "[S] 67/20/11"
+        },
+        "tested_candidates": {
+          "dtype": "Int64",
+          "src": "[S] 289 for P only"
+        },
+        "successful_outcomes": {
+          "dtype": "Int64",
+          "src": "[S] 234 for P only"
+        },
+        "generated_proposals": {
+          "dtype": "Int64",
+          "src": "[S] 887/876 swarm"
+        },
+        "returned_outcomes": {
+          "dtype": "Int64",
+          "src": "[S] 816/461 swarm"
+        },
+        "keep_decisions_per_round": {
+          "dtype": "float64",
+          "src": "[D] 3.35/1.00/0.55"
+        },
+        "category_label_count_configured": {
+          "dtype": "Int64",
+          "src": "[REVISED]"
+        },
+        "category_label_count_productive": {
+          "dtype": "Int64",
+          "src": "[REVISED]"
+        },
+        "generator_model_label": {
+          "dtype": "string",
+          "src": "[S] reported only"
+        },
+        "label_source": {
+          "dtype": "string",
+          "src": "[S] template_hardcoded"
+        },
+        "verified_request": {
+          "dtype": "boolean",
+          "src": "[S] False"
+        }
+      },
+      "example_rows": [
+        {
+          "run_id": "P",
+          "rounds": 20,
+          "keep_decisions": 67,
+          "tested_candidates": 289,
+          "successful_outcomes": 234,
+          "generated_proposals": null,
+          "returned_outcomes": null,
+          "keep_decisions_per_round": 3.35,
+          "category_label_count_configured": 4,
+          "category_label_count_productive": 4,
+          "generator_model_label": "Claude Opus 4.6",
+          "label_source": "template_hardcoded",
+          "verified_request": false
+        },
+        {
+          "run_id": "S-A",
+          "rounds": 20,
+          "keep_decisions": 20,
+          "tested_candidates": null,
+          "successful_outcomes": null,
+          "generated_proposals": 887,
+          "returned_outcomes": 816,
+          "keep_decisions_per_round": 1.0,
+          "category_label_count_configured": 12,
+          "category_label_count_productive": 2,
+          "generator_model_label": "Claude Sonnet 4.5",
+          "label_source": "template_hardcoded",
+          "verified_request": false
+        },
+        {
+          "run_id": "S-B",
+          "rounds": 20,
+          "keep_decisions": 11,
+          "tested_candidates": null,
+          "successful_outcomes": null,
+          "generated_proposals": 876,
+          "returned_outcomes": 461,
+          "keep_decisions_per_round": 0.55,
+          "category_label_count_configured": 12,
+          "category_label_count_productive": 2,
+          "generator_model_label": "Claude Opus 4.6",
+          "label_source": "template_hardcoded",
+          "verified_request": false
+        }
+      ]
+    },
+    "P24_SCHEMA_RUN_REPORT_ROUNDS": {
+      "estimated_row_count": 60,
+      "column_schema": {
+        "run_id": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "round_index": {
+          "dtype": "Int64",
+          "src": "[S] 1..20"
+        },
+        "category_label": {
+          "dtype": "string",
+          "src": "[S] cardinality only"
+        },
+        "keep_decisions": {
+          "dtype": "Int64",
+          "src": "[S] sums to 67/20/11"
+        },
+        "tested_candidates": {
+          "dtype": "Int64",
+          "src": "[S] sums to 289"
+        },
+        "successful_outcomes": {
+          "dtype": "Int64",
+          "src": "[S] sums to 234"
+        },
+        "generated_proposals": {
+          "dtype": "Int64",
+          "src": "[S] sums to 887/876"
+        },
+        "returned_outcomes": {
+          "dtype": "Int64",
+          "src": "[S] sums to 816/461"
+        },
+        "reviewer_next_step_source": {
+          "dtype": "string",
+          "src": "[R] llm | rule_fallback"
+        },
+        "fallback_triggered": {
+          "dtype": "boolean",
+          "src": "[R] rate unreported"
+        }
+      },
+      "sum_closures_required": {
+        "sum_keep_decisions_P": 67,
+        "sum_keep_decisions_S_A": 20,
+        "sum_keep_decisions_S_B": 11,
+        "sum_tested_candidates_P": 289,
+        "sum_successful_outcomes_P": 234,
+        "sum_generated_proposals_S_A": 887,
+        "sum_generated_proposals_S_B": 876,
+        "sum_returned_outcomes_S_A": 816,
+        "sum_returned_outcomes_S_B": 461
+      },
+      "enumerated_anomaly_rounds": 6
+    },
+    "P25_SCHEMA_COLLECTOR_A_PIPELINE": {
+      "estimated_row_count": 67,
+      "record_type": "VECTOR over ADMITTED candidates",
+      "population": "conditional on d(e)=1",
+      "recoverable_mean": 2.227,
+      "column_schema": {
+        "run_id": {
+          "dtype": "string",
+          "src": "[S] always 'P'"
+        },
+        "round_index": {
+          "dtype": "Int64",
+          "src": "[S]"
+        },
+        "decision_rank": {
+          "dtype": "Int64",
+          "src": "[R]"
+        },
+        "expression_id": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "sharpe": {
+          "dtype": "float64",
+          "src": "[S] admitted-candidate Sharpe"
+        }
+      }
+    },
+    "P26_SCHEMA_COLLECTOR_B_SWARM": {
+      "estimated_row_count": 40,
+      "record_type": "SCALAR extremum per ROUND",
+      "population": "positive order statistics",
+      "recoverable_mean": 2.433,
+      "operations": [
+        "collapse_to_maximum",
+        "retain_positive_only"
+      ],
+      "information_lost_at": "LOGGING_TIME_NOT_ANALYSIS_TIME",
+      "column_schema": {
+        "run_id": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "round_index": {
+          "dtype": "Int64",
+          "src": "[S]"
+        },
+        "max_sharpe_positive": {
+          "dtype": "float64",
+          "src": "[S]"
+        },
+        "max_is_from_kept": {
+          "dtype": "boolean",
+          "src": "[R] need not be kept"
+        }
+      }
+    },
+    "P27_SCHEMA_PRESERVED_INPUT_ROWS": {
+      "estimated_row_count": 3114,
+      "column_schema": {
+        "row_id": {
+          "dtype": "Int64",
+          "src": "[R]"
+        },
+        "expression_id": {
+          "dtype": "string",
+          "src": "[R] canonical dedup key"
+        },
+        "expression_text": {
+          "dtype": "string",
+          "src": "[S] DSL source"
+        },
+        "category_label": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "origin_run": {
+          "dtype": "string",
+          "src": "[S] P | S-A | S-B"
+        },
+        "is_sharpe": {
+          "dtype": "float64",
+          "src": "[S] >= 2"
+        },
+        "is_fitness": {
+          "dtype": "float64",
+          "src": "[S] >= 0"
+        },
+        "is_turnover": {
+          "dtype": "float64",
+          "src": "[S] <= 500"
+        },
+        "is_ic": {
+          "dtype": "float64",
+          "src": "[S]"
+        },
+        "is_complexity": {
+          "dtype": "Int64",
+          "src": "[S]"
+        },
+        "is_pool_score": {
+          "dtype": "float64",
+          "src": "[S]"
+        },
+        "is_correlation": {
+          "dtype": "float64",
+          "src": "[S]"
+        },
+        "oos_sharpe": {
+          "dtype": "float64",
+          "src": "[S] MUST be null pre-freeze"
+        },
+        "oos_computed_at": {
+          "dtype": "datetime64[ns]",
+          "src": "[S] MUST be NaT pre-freeze"
+        },
+        "operators_used": {
+          "dtype": "object",
+          "src": "[REVISED]"
+        },
+        "parse_status": {
+          "dtype": "string",
+          "src": "[REVISED] parsed | parse_failed"
+        }
+      },
+      "unsupported_identifiability": "REQUIRES_GRAMMAR__UNDISCLOSED"
+    },
+    "P28_SCHEMA_NATIVE_OOS_CHECKPOINT": {
+      "estimated_row_count": 2016,
+      "negative_row_count": 368,
+      "sign_complete": true,
+      "column_schema": {
+        "expression_id": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "expression_text": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "checkpoint_rank": {
+          "dtype": "Int64",
+          "src": "[R]"
+        },
+        "oos_sharpe_native": {
+          "dtype": "float64",
+          "src": "[S] the audited variable"
+        },
+        "oos_sign": {
+          "dtype": "string",
+          "src": "[D] sign(oos_sharpe_native)"
+        },
+        "is_sharpe_native": {
+          "dtype": "float64",
+          "src": "[REVISED]"
+        },
+        "is_fitness_native": {
+          "dtype": "float64",
+          "src": "[REVISED]"
+        },
+        "is_turnover_native": {
+          "dtype": "float64",
+          "src": "[REVISED]"
+        },
+        "retention_status": {
+          "dtype": "string",
+          "src": "[R] retained_in_catalog | dropped_before_write"
+        }
+      }
+    },
+    "P29_SCHEMA_OUTCOME_FILTERED_CATALOG": {
+      "estimated_row_count": 1837,
+      "non_positive_oos_rows": 0,
+      "rows_passing_stated_is_rule": 1037,
+      "catalog_only_rows_all_positive": 189,
+      "column_schema": {
+        "expression_id": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "expression_text": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "oos_sharpe_native": {
+          "dtype": "float64",
+          "src": "[S] STRICTLY > 0 by construction"
+        },
+        "written": {
+          "dtype": "boolean",
+          "src": "[R]"
+        },
+        "passes_stated_is_rule": {
+          "dtype": "boolean",
+          "src": "[D] 1037 True"
+        },
+        "member_of_checkpoint": {
+          "dtype": "boolean",
+          "src": "[D] 1648 True"
+        }
+      }
+    },
+    "P30_SCHEMA_RUNNER_CONTROL": {
+      "record_count": 1,
+      "fields": {
+        "preliminary_screen.strictness_vs_stated_rule": {
+          "value": "looser",
+          "src": "[S]"
+        },
+        "preliminary_screen.exact_predicate": {
+          "value": "UNDISCLOSED",
+          "src": "[S]"
+        },
+        "write_condition.predicate": {
+          "value": "oos_sharpe > 0",
+          "src": "[S]"
+        },
+        "write_condition.on_fail": {
+          "value": "DROP_BEFORE_WRITE",
+          "src": "[S]"
+        },
+        "stated_is_rule.sharpe_min": {
+          "value": 2.0,
+          "src": "[S]"
+        },
+        "stated_is_rule.fitness_min": {
+          "value": 0.0,
+          "src": "[S]"
+        },
+        "stated_is_rule.turnover_max": {
+          "value": 500.0,
+          "src": "[S]"
+        }
+      }
+    },
+    "P31_SCHEMA_FROZEN_COHORT": {
+      "estimated_row_count": 1047,
+      "meta_fields": {
+        "freeze_id": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "freeze_timestamp": {
+          "dtype": "datetime64[ns, Asia/Shanghai]",
+          "src": "[R]"
+        },
+        "cohort_hash": {
+          "dtype": "string",
+          "src": "[R] SHA-256"
+        },
+        "source_rows": {
+          "dtype": "Int64",
+          "src": "[S] 3114"
+        },
+        "cohort_size": {
+          "dtype": "Int64",
+          "src": "[S] 1047"
+        },
+        "dedup_key": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "admission_rule": {
+          "dtype": "string",
+          "src": "[S] IS only"
+        },
+        "oos_used_in_admission": {
+          "dtype": "bool",
+          "src": "[S] False"
+        }
+      },
+      "disclaimer_fields": {
+        "is_census_of_generated_candidates": {
+          "value": false,
+          "src": "[S]"
+        },
+        "is_historically_blind_holdout": {
+          "value": false,
+          "src": "[S]"
+        },
+        "is_matched_replay_of_keep_totals": {
+          "value": false,
+          "src": "[S]"
+        }
+      },
+      "column_schema": {
+        "cohort_rank": {
+          "dtype": "Int64",
+          "src": "[R] enters the hash"
+        },
+        "expression_id": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "expression_text": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "category_label": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "origin_run": {
+          "dtype": "string",
+          "src": "[S]"
+        }
+      }
+    },
+    "P32_SCHEMA_EVALUATOR_METRIC_VECTORS": {
+      "estimated_row_count": "UNDISCLOSED",
+      "column_schema": {
+        "expression_id": {
+          "dtype": "string",
+          "src": "[R]"
+        },
+        "sharpe": {
+          "dtype": "float64",
+          "src": "[S] native"
+        },
+        "fitness": {
+          "dtype": "float64",
+          "src": "[S] native"
+        },
+        "turnover": {
+          "dtype": "float64",
+          "src": "[S] native"
+        },
+        "ic": {
+          "dtype": "float64",
+          "src": "[S] native, NOT public rank-IC"
+        },
+        "complexity": {
+          "dtype": "Int64",
+          "src": "[S]"
+        },
+        "pool_score": {
+          "dtype": "float64",
+          "src": "[S]"
+        },
+        "correlation": {
+          "dtype": "float64",
+          "src": "[S]"
+        }
+      }
+    },
+    "P33_SCHEMA_TRADING_CALENDAR": {
+      "estimated_row_count": 727,
+      "column_schema": {
+        "row_index": {
+          "dtype": "Int64",
+          "src": "[R] dense 1..727"
+        },
+        "trade_date": {
+          "dtype": "datetime64[ns]",
+          "src": "[S]"
+        },
+        "year": {
+          "dtype": "Int64",
+          "src": "[D]"
+        },
+        "in_label_window": {
+          "dtype": "boolean",
+          "src": "[S] 2024-2025 -> True"
+        },
+        "label_available": {
+          "dtype": "boolean",
+          "src": "[D] row_index+5 <= 727"
+        }
+      },
+      "label_availability_rule": "row_index + 5 <= 727",
+      "terminal_unlabelled_rows": [
+        723,
+        724,
+        725,
+        726,
+        727
+      ],
+      "example_rows_REVISED": [
+        {
+          "row_index": 1,
+          "trade_date": "2023-01-03",
+          "year": 2023,
+          "in_label_window": false,
+          "label_available": false
+        },
+        {
+          "row_index": 2,
+          "trade_date": "2023-01-04",
+          "year": 2023,
+          "in_label_window": false,
+          "label_available": false
+        },
+        {
+          "row_index": 723,
+          "trade_date": "2025-12-25",
+          "year": 2025,
+          "in_label_window": true,
+          "label_available": false
+        },
+        {
+          "row_index": 727,
+          "trade_date": "2025-12-31",
+          "year": 2025,
+          "in_label_window": true,
+          "label_available": false
+        }
+      ],
+      "arithmetic_note": "723 + 5 = 728 > 727 therefore label_available = False"
+    },
+    "P34_SCHEMA_MASK_REGISTER": {
+      "estimated_row_count": 2,
+      "column_schema": {
+        "stock_code": {
+          "dtype": "string",
+          "src": "[S]"
+        },
+        "trade_date": {
+          "dtype": "datetime64[ns]",
+          "src": "[S]"
+        },
+        "reason": {
+          "dtype": "string",
+          "src": "[R] non_trading_stock_day"
+        },
+        "treatment": {
+          "dtype": "string",
+          "src": "[S] 'MASKED'"
+        },
+        "forward_fill": {
+          "dtype": "boolean",
+          "src": "[S] must be False"
+        },
+        "drop_stock": {
+          "dtype": "boolean",
+          "src": "[S] must be False"
+        }
+      },
+      "invariants": {
+        "mask_count": 2,
+        "masked_value_is_null_not_zero": true,
+        "any_forward_fill_operation": false,
+        "stock_count_after_masking": 40,
+        "file_count_after_masking": 80
+      }
+    },
+    "P35_DATA_PREPROCESSING_PARAMETERS": {
+      "ingest_ordering": [
+        "verify_80_files",
+        "separate_views",
+        "mask_non_trading_cells",
+        "build_labels_from_adjusted_close",
+        "rank_and_gate_per_date",
+        "aggregate_per_factor",
+        "assign_exactly_one_ledger_state"
+      ],
+      "view_separation_enforced_before_join": true,
+      "shared_field_agreement_check_before_use": true,
+      "alignment_key": [
+        "stock_code",
+        "trade_date"
+      ],
+      "date_index_construction": "DENSE_ROW_INDEX_OVER_727_TRADING_ROWS",
+      "calendar_reindex_permitted": false,
+      "resampling_permitted": false,
+      "forward_fill_permitted": false,
+      "backward_fill_permitted": false,
+      "interpolation_permitted": false,
+      "winsorisation_permitted": false,
+      "standardisation_permitted": false,
+      "outlier_removal_rule": null,
+      "ledger_state_assignment": "EXACTLY_ONE_PER_RECORD",
+      "impute_missing_as_zero": false,
+      "drop_non_scorable_from_denominator": false
+    },
+    "P36_REPOSITORY_MANIFEST": {
+      "github_repositories_cited": [],
+      "dataset_dois_cited": [],
+      "supplementary_material_links": [],
+      "total_urls_in_manuscript": 3,
+      "urls_are_all_bibliographic": true,
+      "redistribution_prohibited": true,
+      "explicit_non_release_statements": [
+        "Current source ... is not automatically treated as the exactly historically executed commit.",
+        "The original proprietary evaluator and full historical request traces are not released.",
+        "This does not establish a census of all generated candidates or a historically blind holdout.",
+        "Proprietary components and raw provider data are not represented as publicly redistributable artifacts.",
+        "No human-annotation study or independent human review is claimed."
+      ],
+      "reproducibility_package_should_contain": [
+        "frozen_1047_id_list_with_hash_and_freeze_timestamp",
+        "80_file_hash_manifest_and_acquisition_instructions",
+        "v1_and_v2_evaluator_versions_with_change_description",
+        "ledger_generation_logic",
+        "nine_designated_spot_check_cells_and_both_implementations",
+        "six_reference_definitions_with_preregistration_timestamp",
+        "disclosure_tables_with_UNDISCLOSED_cells_intact"
+      ],
+      "bibliography": [
+        {
+          "id": 1,
+          "name": "AlphaAgent",
+          "arxiv": "2502.16789",
+          "year": 2025,
+          "url": "https://arxiv.org/abs/2502.16789",
+          "cited_in": "§2 only"
+        },
+        {
+          "id": 2,
+          "name": "QuantaAlpha",
+          "arxiv": "2602.07085v3",
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2602.07085v3",
+          "cited_in": "§2 only"
+        },
+        {
+          "id": 3,
+          "name": "Cognitive Alpha Mining",
+          "arxiv": "2511.18850",
+          "year": 2025,
+          "url": "https://arxiv.org/abs/2511.18850",
+          "cited_in": "§2 only"
+        }
+      ]
+    },
+    "P37_DOCUMENT_AND_TABLE_CONSTRUCTION": {
+      "document_class": "article",
+      "options": [
+        "10pt",
+        "twocolumn"
+      ],
+      "packages": [
+        "inputenc[utf8]",
+        "geometry[margin=0.75in,top=1in,bottom=1in]",
+        "times",
+        "amsmath",
+        "amssymb",
+        "booktabs",
+        "microtype",
+        "url",
+        "hyperref[hidelinks]"
+      ],
+      "table_style": "booktabs",
+      "table_float_count": 4,
+      "table_labels": [
+        "tab:1",
+        "tab:2",
+        "tab:3",
+        "tab:4"
+      ],
+      "blank_cell_convention": "declare unavailable, never render as zero",
+      "decimal_precision_in_tables": 3,
+      "equation_numbering": "single numbered display, Eq. (1)"
+    },
+    "P38_PLOT_CONSTRUCTION_PARAMETERS": {
+      "figure_count_in_paper": 0,
+      "plot_count_in_paper": 0,
+      "plotting_library_referenced": null,
+      "note": "All quantitative content is tabular. A reproducer who adds plots must disclose them as an addition."
+    },
+    "P39_METHODOLOGICAL_NOTES": {
+      "notes": [
+        "Grain precedes metric: a field named Sharpe specifies no population.",
+        "Counters specify no denominator.",
+        "A positive-only artifact cannot estimate negative frequency.",
+        "Information destroyed at logging time is unrecoverable at analysis time.",
+        "Freeze before scoring; immutability is the antidote to retention bias.",
+        "Conserve every record; admit no imputed neutral value.",
+        "Re-run everything after any correction.",
+        "Pre-register comparators before computing their outcomes.",
+        "Overlapping labels forbid a significance test on the aggregate.",
+        "Provenance precedes scale."
+      ],
+      "open_gaps_the_paper_leaves": {
+        "rank_ic_never_typeset": "specified in prose only",
+        "v1_defect_selection_consequence_unquantified": true,
+        "is_screen_window_vs_label_window_overlap": "NOT_ADJUDICATED",
+        "three_distinct_value_gate_censors_sparse_signals": true,
+        "distribution_dispersion_unreported": true,
+        "null_calibration_absent": true,
+        "clean_oos_acceptance_criteria_unpublished": true
+      },
+      "self_audit_extensions_beyond_paper": {
+        "S1_quantify_v1_error_conditioned_subset": true,
+        "S2_permutation_null_calibration": true,
+        "S3_adjudicate_is_label_window_overlap": true
+      }
+    },
+    "P40_ACCEPTANCE_TARGETS_STRUCTURAL_INVARIANTS": {
+      "file_matrix": {
+        "target": "40 * 2 == 80"
+      },
+      "calendar_sum": {
+        "target": "242 + 242 + 243 == 727"
+      },
+      "label_window": {
+        "target": "485 - 5 == 480"
+      },
+      "calendar_2023_residual": {
+        "target": "727 - 485 == 242"
+      },
+      "set_partition_checkpoint": {
+        "target": "368 + 1648 == 2016"
+      },
+      "set_partition_catalog": {
+        "target": "189 + 1648 == 1837"
+      },
+      "ledger": {
+        "target": "923 + 99 + 25 == 1047"
+      },
+      "ledger_supported_partition": {
+        "target": "1047 - 25 == 923 + 99 == 1022"
+      },
+      "ledger_pre_tests": {
+        "target": "867 + 98 + 25 == 990"
+      },
+      "correction_split": {
+        "target": "56 + 1 == 57"
+      },
+      "version_closures": {
+        "target": "1047 == 990 + 57"
+      },
+      "sign_partition": {
+        "target": "671 + 252 == 923"
+      },
+      "coverage_partition": {
+        "target": "835 + 88 == 923"
+      },
+      "non_scorable": {
+        "target": "99 + 25 == 124"
+      },
+      "catalog_rule_failures": {
+        "target": "1837 - 1037 == 800"
+      },
+      "implied_pipeline_failures": {
+        "target": "289 - 234 == 55"
+      }
+    },
+    "P41_ACCEPTANCE_TARGETS_STUDY_SPECIFIC": {
+      "reachable_with_private_artifacts_only": true,
+      "values": {
+        "pipeline_mean_sharpe_over_kept": 2.227,
+        "swarm_mean_of_round_maxima": 2.433,
+        "pipeline_kept_max_sharpe": 2.449,
+        "pipeline_round_summary_max": 3.171,
+        "swarm_round_max": 4.206,
+        "leaderboard_keeps": {
+          "S_A": 8,
+          "S_B": 9
+        },
+        "anomalous_S_A_rounds": 6,
+        "checkpoint_expressions": 2016,
+        "checkpoint_negative_oos_rows": 368,
+        "catalog_expressions": 1837,
+        "catalog_non_positive_oos_rows": 0,
+        "catalog_rows_passing_stated_is_rule": 1037,
+        "catalog_only_expressions": 189,
+        "checkpoint_only_expressions": 368,
+        "intersection_expressions": 1648,
+        "intersection_sign_disagreements": 0,
+        "preserved_input_rows": 3114,
+        "frozen_cohort_size": 1047,
+        "scorable_records": 923,
+        "insufficient_valid_dates": 99,
+        "unsupported_records": 25,
+        "positive_mean_rank_ic": 671,
+        "negative_mean_rank_ic": 252,
+        "median_mean_rank_ic": 0.0148,
+        "factors_with_all_480_dates": 835,
+        "factors_with_partial_coverage": 88,
+        "v1_error_count": 57,
+        "v2_newly_scorable": 56,
+        "v2_residual_insufficient": 1,
+        "v1_unchanged_records": 990,
+        "masked_cells": 2,
+        "reference_mean_rank_ic": {
+          "nominal_close_level": -0.0218,
+          "share_volume": 0.0234,
+          "nominal_traded_amount": 0.0021,
+          "one_day_nominal_reversal": -0.0007,
+          "five_day_nominal_reversal": -0.0155,
+          "twenty_day_nominal_change": 0.0229
+        }
+      }
+    },
+    "P42_ARITHMETIC_CLOSURES": {
+      "file_matrix": "40 * 2 == 80",
+      "calendar": "242 + 242 + 243 == 727",
+      "calendar_2023_residual": "727 - 485 == 242",
+      "label_availability": "485 - 5 == 480",
+      "set_partition_checkpoint": "368 + 1648 == 2016",
+      "set_partition_catalog": "189 + 1648 == 1837",
+      "ledger": "923 + 99 + 25 == 1047",
+      "ledger_supported": "1047 - 25 == 1022 == 923 + 99",
+      "sign_partition": "671 + 252 == 923",
+      "coverage_partition": "835 + 88 == 923",
+      "version_closures": [
+        "1047 == 990 + 57",
+        "990 == 867 + 98 + 25",
+        "867 + 56 == 923",
+        "98 + 1 == 99"
+      ],
+      "implied_pipeline_failures": "289 - 234 == 55",
+      "non_scorable": "99 + 25 == 124",
+      "catalog_rule_failures": "1837 - 1037 == 800",
+      "sum_closures_rounds_to_totals": [
+        "sum(round_generated) == 887 or 876",
+        "sum(round_keeps) == 11",
+        "sum(round_keeps) == 20",
+        "sum(round_keeps) == 67",
+        "sum(round_returned) == 816 or 461",
+        "sum(round_successful) == 234",
+        "sum(round_tested) == 289"
+      ]
+    },
+    "P43_GOVERNANCE_PARAMETERS": {
+      "public_data_only": true,
+      "live_trading_claim_permitted": false,
+      "financial_advice_claim_permitted": false,
+      "order_sending_permitted": false,
+      "preserve_failed_records": true,
+      "preserve_non_scorable_records": true,
+      "redistribution_grant": false,
+      "redistributable_artifacts": [
+        "hashes",
+        "definitions",
+        "versioned_evaluator_logic",
+        "acceptance_tests",
+        "frozen_id_list_with_hash_and_timestamp",
+        "disclosure_tables",
+        "spot_check_cell_definitions"
+      ],
+      "non_redistributable_artifacts": [
+        "raw_vendor_data",
+        "proprietary_evaluator_internals"
+      ],
+      "model_labels_as_verified_identity": false,
+      "ai_assistance_disclosed": true,
+      "human_annotation_study_claimed": false,
+      "independent_human_review_claimed": false,
+      "numericals_computed_not_generated": true,
+      "author_accountability_asserted": true
+    },
+    "P44_RAW_LAYER_INVARIANTS": {
+      "file_count_equals_80": true,
+      "rows_per_bar_file_equals_727": true,
+      "calendar_rows_equals_727": true,
+      "calendar_year_counts_242_242_243": true,
+      "label_window_rows_equals_485": true,
+      "terminal_unlabelled_rows_equals_5": true,
+      "label_available_rows_equals_480": true,
+      "masked_cell_rows_equals_2": true,
+      "forward_fill_rows_equals_0": true,
+      "stock_prefix_reductions_equals_0": true,
+      "oos_sharpe_non_null_rows_before_freeze_equals_0": true,
+      "imputed_zero_alpha_records_equals_0": true,
+      "unassigned_ledger_records_equals_0": true,
+      "catalog_non_positive_oos_rows_equals_0": true,
+      "sign_disagreements_in_intersection_equals_0": true,
+      "duplicate_rows_per_stock_date_equals_0": true,
+      "retrieval_coherence_window_not_exceeded": true
+    },
+    "P45_DISCLOSURE_GAPS": {
+      "fallback_rate_reported": false,
+      "universe_constituents_disclosed": false,
+      "is_screen_window_disclosed": false,
+      "prompts_disclosed": false,
+      "inference_settings_disclosed": false,
+      "api_credentials_disclosed": false,
+      "grammar_disclosed": false,
+      "executed_commit_bound_to_report": false,
+      "initial_pool_hash_available": false,
+      "specialist_to_category_map_disclosed": false,
+      "allocation_update_rule_disclosed": false,
+      "prompt_revision_periodicity_disclosed": false,
+      "catalog_source_pool_disclosed": false,
+      "evaluator_metric_vectors_sized": false,
+      "executed_selection_policy_disclosed": false,
+      "orchestrator_implementation_disclosed": false,
+      "preliminary_screen_disclosed": false,
+      "reviewer_model_label_reported": false,
+      "sd_definition_disclosed": false,
+      "search_budget_disclosed": false,
+      "seeds_disclosed": false,
+      "spot_check_tolerance_disclosed": false
+    },
+    "P45_GAP_RECONCILIATION": {
+      "leaf_to_gap": {
+        "P00_META.provenance_tags[4]": "NOT_A_GAP",
+        "P02_RANK_IC_PARAMETERS.sd_definition": "sd_definition_disclosed",
+        "P06_COHORT_ADMISSION_PARAMETERS.workflow_specific_gates_enabled": "executed_selection_policy_disclosed",
+        "P10_RETENTION_AUDIT_PARAMETERS.preliminary_screen_predicate": "preliminary_screen_disclosed",
+        "P30_SCHEMA_RUNNER_CONTROL.fields.preliminary_screen.exact_predicate.value": "preliminary_screen_disclosed",
+        "P10_RETENTION_AUDIT_PARAMETERS.catalog_source_pool_size": "catalog_source_pool_disclosed",
+        "P11_ACQUISITION_PARAMETERS.provider_url": "universe_constituents_disclosed",
+        "P13_DSL_EVALUATOR_INTERFACE.grammar": "grammar_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.specialist_to_category_map": "specialist_to_category_map_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.orchestrator_implementation_class": "orchestrator_implementation_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.adaptive_allocation_weights.dimensionality": "allocation_update_rule_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.adaptive_allocation_weights.initialisation": "allocation_update_rule_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.adaptive_allocation_weights.update_rule": "allocation_update_rule_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.allocation_weight_update_rule": "allocation_update_rule_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.prompt_revision.applied": "prompt_revision_periodicity_disclosed",
+        "P15_SWARM_ARCHITECTURE_PARAMETERS.prompt_revision.periodicity": "prompt_revision_periodicity_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.prompt_revision_periodicity": "prompt_revision_periodicity_disclosed",
+        "P16_COMPARISON_HARNESS_PARAMETERS.seeds_reported": "seeds_disclosed",
+        "P16_COMPARISON_HARNESS_PARAMETERS.state_inheritance_mechanism": "initial_pool_hash_available",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.evaluations_per_round": "search_budget_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.generations_cap": "search_budget_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.evaluations_cap": "search_budget_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.token_cap": "search_budget_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.wall_clock_cap": "search_budget_disclosed",
+        "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.early_stopping": "search_budget_disclosed",
+        "P18_VERIFICATION_PARAMETERS.tolerance_nine_cell": "spot_check_tolerance_disclosed",
+        "P21_LLM_CONFIGURATION.llm_names_reported_as_labels_only.pipeline_reviewer.label": "reviewer_model_label_reported",
+        "P21_LLM_CONFIGURATION.llm_names_reported_as_labels_only.pipeline_reviewer.label_source": "reviewer_model_label_reported",
+        "P21_LLM_CONFIGURATION.llm_api_credentials.api_base_url": "api_credentials_disclosed",
+        "P21_LLM_CONFIGURATION.llm_api_credentials.auth_scheme": "api_credentials_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.temperature": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.top_p": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.top_k": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.max_output_tokens": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.sampling_seed": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.stop_sequences": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.retry_policy": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.backoff_policy": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.request_timeout_seconds": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.context_assembly_rule": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.llm_inference_settings.response_parsing_rule": "inference_settings_disclosed",
+        "P21_LLM_CONFIGURATION.prompt_templates.system_prompt": "prompts_disclosed",
+        "P21_LLM_CONFIGURATION.prompt_templates.user_prompt_template": "prompts_disclosed",
+        "P32_SCHEMA_EVALUATOR_METRIC_VECTORS.estimated_row_count": "evaluator_metric_vectors_sized"
+      },
+      "self_evidenced_gaps": [
+        "fallback_rate_reported",
+        "is_screen_window_disclosed",
+        "executed_commit_bound_to_report"
+      ]
+    },
+    "verification_targets": {
+      "file_count": {
+        "target": 80,
+        "tolerance": "EXACT"
+      },
+      "calendar_rows": {
+        "target": 727,
+        "tolerance": "EXACT"
+      },
+      "label_available_dates": {
+        "target": 480,
+        "tolerance": "EXACT"
+      },
+      "terminal_unlabelled_rows": {
+        "target": 5,
+        "tolerance": "EXACT"
+      },
+      "masked_cells": {
+        "target": 2,
+        "tolerance": "EXACT"
+      },
+      "ledger_closure": {
+        "target": "923+99+25 == 1047",
+        "tolerance": "EXACT"
+      },
+      "sign_closure": {
+        "target": "671+252 == 923",
+        "tolerance": "EXACT"
+      },
+      "coverage_closure": {
+        "target": "835+88 == 923",
+        "tolerance": "EXACT"
+      },
+      "version_closure": {
+        "target": "1047 == 990+57",
+        "tolerance": "EXACT"
+      },
+      "correction_closure": {
+        "target": "56+1 == 57",
+        "tolerance": "EXACT"
+      },
+      "pipeline_mean_sharpe_over_kept": {
+        "target": 2.227,
+        "tolerance": "3_DECIMALS",
+        "reachable": "PRIVATE_ARTIFACTS_ONLY"
+      },
+      "swarm_mean_of_round_maxima": {
+        "target": 2.433,
+        "tolerance": "3_DECIMALS",
+        "reachable": "PRIVATE_ARTIFACTS_ONLY"
+      },
+      "median_mean_rank_ic": {
+        "target": 0.0148,
+        "tolerance": "4_DECIMALS",
+        "reachable": "PRIVATE_ARTIFACTS_ONLY"
+      },
+      "catalog_rows_passing_stated_rule": {
+        "target": 1037,
+        "tolerance": "EXACT",
+        "reachable": "PRIVATE_ARTIFACTS_ONLY"
+      },
+      "cohort_size": {
+        "target": 1047,
+        "tolerance": "EXACT",
+        "reachable": "PRIVATE_ARTIFACTS_ONLY"
+      }
+    }
+  }
+}

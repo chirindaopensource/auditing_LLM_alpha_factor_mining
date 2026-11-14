@@ -1,0 +1,1626 @@
+# =============================================================================
+#
+#  Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort
+#  Reanalysis -- Study Configuration
+#
+#  This file is the complete STUDY_CONFIG dictionary consumed by the
+#  top-level orchestrator `run_study` (Task 14) of the implementation of
+#  "Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort
+#  Reanalysis" by Yufeng He (2026). It is converted leaf for leaf from the
+#  notebook's configuration literal: every section P00 to P45, the raw
+#  input schemas and the verification targets.
+#
+#  Provenance tags (trailing comments, taken from STUDY_CONFIG's parallel
+#  "_provenance_tags" dictionary, which is data in the notebook):
+#  • [S]   stated in the manuscript
+#  • [D]   derived from, or implied by, the manuscript
+#  • [R]   reproduction choice (may move published values; disclosed)
+#  • [I]   illustrative only -- not in the manuscript; never a paper finding
+#  • UNDISCLOSED  acknowledged absence in the manuscript
+#
+#  Conventions:
+#  • Exponent floats are written as 1.0e-12 (YAML 1.1 reads 1e-12 as text).
+#  • P42_ARITHMETIC_CLOSURES.sum_closures_rounds_to_totals is a Python set
+#    in the notebook and is written here as a YAML !!set.
+#  • Published figures are comparison targets, never computed values.
+#
+#  Paper Reference:
+#  He, Y. (2026). Auditing LLM Alpha-Factor Mining: Metric Provenance and
+#  Full-Cohort Reanalysis. arXiv preprint arXiv:2610.29500.
+#  https://arxiv.org/abs/2610.29500
+#
+#  Author: CS Chirinda
+#  License: MIT
+#  Version: 1.0.0
+#
+# =============================================================================
+
+STUDY_CONFIG:
+  "P00_META":
+    "title": "Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort Reanalysis"  # [S]
+    "author": "Yufeng He"  # [S]
+    "affiliation": "The University of Hong Kong"  # [S]
+    "evidence_timeframe": "March 2026 run reports"  # [S]
+    "document_class": "article, 10pt, twocolumn"  # [S]
+    "targets":
+      "T1": "Level-1 metric-grain and provenance diagnosis"  # [S]
+      "T2": "Level-2 outcome-conditioned retention identification"  # [S]
+      "T3": "Level-3 full-cohort public reanalysis"  # [S]
+      "T4": "Historical run reconstruction -- IMPOSSIBLE"  # [D]
+    "claim_type_by_target_REVISED":
+      "T1": "REPLICATION_EXACT__only_with_private_reports"  # [R]
+      "T2": "REPLICATION_EXACT__only_with_private_checkpoint_and_catalog"  # [R]
+      "T3": "METHODOLOGY_REPRODUCTION__result_reproduction_unavailable"  # [R]
+      "T4": "RECONSTRUCTION_ONLY"  # [R]
+    "provenance_tags":
+      - "[S]"  # [S]
+      - "[D]"  # [D]
+      - "[R]"  # [R]
+      - "[I]"  # [I]
+      - "UNDISCLOSED"  # UNDISCLOSED
+    "fidelity_declarations":
+      "D1_api_keys_absent_from_paper": true  # [S]
+      "D2_prompts_absent_from_paper": true  # [S]
+      "D3_inference_settings_absent_from_paper": true  # [S]
+      "D4_zero_neural_networks_in_paper": true  # [S]
+      "D5_zero_figures_zero_plots_four_tables": true  # [S]
+    "config_self_provenance_REVISED":
+      "config_self_hash_algorithm": "SHA-256"  # [R]
+      "config_self_hash_coverage": "SERIALISED_CANONICAL_JSON_OF_THIS_DICT"  # [R]
+      "config_self_timestamp_required": true  # [R]
+      "config_self_timestamp_timezone": "Asia/Shanghai"  # [R]
+  "raw_input_schemas":
+    "FILES":
+      "row_count": 80  # [D]
+      "primary_key":
+        - "file_id"  # [R]
+      "columns":
+        "file_id": "string"  # [R]
+        "stock_code": "string"  # [S]
+        "stock_rank": "Int64"  # [R]
+        "adjustment": "string"  # [S]
+        "row_count": "Int64"  # [D]
+        "byte_hash": "string"  # [S]
+        "content_length_bytes": "Int64"  # [R]
+        "schema_fingerprint": "string"  # [R]
+        "date_min": "datetime64[ns]"  # [S]
+        "date_max": "datetime64[ns]"  # [S]
+        "requested_stock_code": "string"  # [R]
+        "requested_date_min": "datetime64[ns]"  # [R]
+        "requested_date_max": "datetime64[ns]"  # [R]
+        "requested_adjustment": "string"  # [R]
+        "response_truncated": "boolean"  # [R]
+        "hash_ok": "boolean"  # [R]
+        "date_id_ok": "boolean"  # [R]
+        "stock_id_ok": "boolean"  # [R]
+        "adjustment_id_ok": "boolean"  # [R]
+        "quantity_agreement_ok": "boolean"  # [R]
+        "status_agreement_ok": "boolean"  # [R]
+        "verified": "boolean"  # [R]
+        "retrieved": "datetime64[ns, Asia/Shanghai]"  # [R]
+        "redistribution_flag": "boolean"  # [S]
+      "attrs_header_fields":
+        "provider": "string"  # [R]
+        "provider_version": "string"  # [R]
+        "universe_label": "string"  # [R]
+        "universe_order_fixed": "bool"  # [R]
+        "universe_disclosed": "bool"  # [R]
+        "date_count": "Int64"  # [R]
+        "file_count": "Int64"  # [R]
+        "masked_cell_count": "Int64"  # [R]
+        "retrieval_batch_timestamp": "datetime64[ns, Asia/Shanghai]"  # [R]
+        "retrieval_coherence_window": "string"  # [R]
+        "config_self_hash": "string"  # [R]
+        "redistribution_grant": "bool"  # [R]
+      "verified_conjunction_semantics": "KLEENE_FAIL_FAST"  # [R]
+    "UNADJUSTED_BARS":
+      "estimated_row_count": 29080  # [D]
+      "primary_key":
+        - "stock_code"  # [R]
+        - "trade_date"  # [R]
+      "uniqueness_halt_assertion": true  # [R]
+      "columns":
+        "stock_code": "string"  # [S]
+        "trade_date": "datetime64[ns]"  # [S]
+        "adjustment": "string"  # [S]
+        "open": "float64"  # [S]
+        "high": "float64"  # [S]
+        "low": "float64"  # [S]
+        "close": "float64"  # [S]
+        "volume": "Int64"  # [S]
+        "amount": "float64"  # [S]
+        "quantity": "Int64"  # [S]
+        "tradable": "boolean"  # [S]
+        "tradestatus_raw": "Int64"  # [R]
+        "byte_hash": "string"  # [S]
+      "ingest_procedure":
+        "volume_ingest_dtype": "float64"  # [R]
+        "volume_integrality_assertion": "ABS_V_MINUS_ROUND_V_EQ_ZERO"  # [R]
+        "volume_cast_after_assertion": "Int64"  # [R]
+    "ADJUSTED_BARS":
+      "estimated_row_count": 29080  # [D]
+      "primary_key":
+        - "stock_code"  # [R]
+        - "trade_date"  # [R]
+      "feature_path_embargo": true  # [S]
+      "uniqueness_halt_assertion": true  # [R]
+      "columns":
+        "stock_code": "string"  # [S]
+        "trade_date": "datetime64[ns]"  # [S]
+        "adjustment": "string"  # [S]
+        "open_adj": "float64"  # [R]
+        "high_adj": "float64"  # [R]
+        "low_adj": "float64"  # [R]
+        "close_adj": "float64"  # [S]
+        "adj_factor": "float64"  # [R]
+        "adj_factor_segment_id": "Int64"  # [R]
+        "quantity": "Int64"  # [S]
+        "tradable": "boolean"  # [S]
+        "tradestatus_raw": "Int64"  # [R]
+        "byte_hash": "string"  # [S]
+  "P01_LABEL_EQUATION_PARAMETERS":
+    "governs": "Eq. (1): y_{i,t} = P^adj_{i,t+5} / P^adj_{i,t} - 1"  # [S]
+    "equation_id": "Eq. (1)"  # [S]
+    "equation_is_numbered": true  # [S]
+    "equation_count_in_paper": 1  # [S]
+    "unnumbered_display_equations_in_paper": 0  # [S]
+    "forward_horizon_rows": 5  # [S]
+    "step_index_kind": "TRADING_CALENDAR_ROW_OFFSET"  # [S]
+    "step_index_direction": "FORWARD"  # [D]
+    "return_form": "SIMPLE"  # [D]
+    "numerator_price_field": "close_adj"  # [D]
+    "denominator_price_field": "close_adj"  # [D]
+    "price_view_permitted": "provider_adjusted"  # [S]
+    "price_view_embargoed_from_features": true  # [S]
+    "endpoint_finite_required": true  # [S]
+    "endpoint_strictly_positive_required": true  # [S]
+    "endpoint_tradable_required": true  # [S]
+    "endpoint_tradable_source_field": "tradable"  # [R]
+    "endpoint_row_indices": "i AND i+5"  # [D]
+    "both_endpoints_checked": true  # [S]
+    "undefined_label_representation": null  # [S]
+    "label_window_start_year": 2024  # [S]
+    "label_window_end_year": 2025  # [S]
+    "label_window_trading_rows": 485  # [D]
+    "terminal_unlabelled_rows": 5  # [S]
+    "label_available_rows": 480  # [D]
+    "total_calendar_rows": 727  # [S]
+    "is_total_return_claim": false  # [S]
+    "is_executable_pnl_claim": false  # [S]
+    "transaction_cost_model": null  # [S]
+    "borrow_cost_model": null  # [S]
+    "capacity_model": null  # [S]
+    "dividend_reinvestment_model": null  # [S]
+  "P02_RANK_IC_PARAMETERS":
+    "governs": "daily rank-IC = Pearson( rank_avg(f_{.,t}), rank_avg(y_{.,t}) )"  # [S]
+    "statistic_definition": "Pearson correlation of average-tie cross-sectional ranks"  # [S]
+    "statistic_is_typeset_in_paper": false  # [S]
+    "correlation_implementation": "PEARSON_ON_RANKS"  # [S]
+    "pearson_of_midranks_equals_spearman_with_ties": true  # [D]
+    "tie_method": "AVERAGE_MID_RANK"  # [S]
+    "ranking_orientation": "ASCENDING"  # [R]
+    "ranking_applied_per_date": true  # [S]
+    "monotone_invariance_exploited": true  # [D]
+    "min_eligible_stocks_per_date": 5  # [S]
+    "min_distinct_signal_values": 3  # [S]
+    "min_distinct_signal_values_status": "DIAGNOSTIC_CONVENTION"  # [S]
+    "min_distinct_label_values": 2  # [S]
+    "eligible_stock_conditions":
+      - "factor_value_available"  # [S]
+      - "label_value_available"  # [S]
+      - "stock_day_tradable"  # [S]
+      - "stock_day_not_masked"  # [S]
+    "date_gate_evaluated_jointly": true  # [S]
+    "insufficient_date_gate_result": null  # [S]
+    "distinct_value_counting_set": "ELIGIBLE_STOCKS_FACTOR_AND_LABEL_AVAILABLE"  # [R]
+    "distinct_value_counting_set_source": "UNSPECIFIED IN MANUSCRIPT__[R]"  # [R]
+    "factor_history_requirement": "NATURAL__ts_operators_undefined_before_window"  # [R]
+    "mean_sd_ratio_is_annualised": false  # [S]
+    "mean_sd_ratio_is_trading_sharpe": false  # [S]
+    "sd_definition": "UNDISCLOSED"  # [S]
+    "cross_factor_significance_test": null  # [S]
+    "label_overlap_acknowledged": true  # [S]
+    "per_factor_independence_assumed": false  # [S]
+  "P03_FACTOR_AGGREGATION_PARAMETERS":
+    "governs": "mean signed rank-IC over T_f, subject to |T_f| >= 20"  # [S]
+    "min_valid_dates_for_scorability": 20  # [S]
+    "valid_date_set_definition": "T_f = { t : date_gates_pass AND IC_{f,t} defined }"  # [S]
+    "aggregation_operator": "ARITHMETIC_MEAN"  # [S]
+    "signed_preservation": true  # [S]
+    "full_coverage_target_dates": 480  # [S]
+    "partial_coverage_handling": "RETAIN_AND_FLAG"  # [S]
+    "factors_with_full_coverage": 835  # [S]
+    "factors_with_partial_coverage": 88  # [S]
+    "sign_classification_precision": "FULL_FLOAT_PRECISION_NEAR_ZERO_DIAGNOSTIC"  # [R]
+    "near_zero_absolute_threshold": 1.0e-12  # [R]
+  "P04_LEDGER_PARAMETERS":
+    "governs": "923 scorable + 99 insufficient + 25 unsupported = 1,047"  # [S]
+    "denominator_total": 1047  # [S]
+    "state_assignment_rule": "EXACTLY_ONE_PER_RECORD"  # [S]
+    "states":
+      - "scorable"  # [S]
+      - "insufficient"  # [S]
+      - "unsupported"  # [S]
+    "state_precedence":
+      - "unsupported"  # [R]
+      - "insufficient"  # [R]
+      - "scorable"  # [R]
+    "state_precedence_source": "NOT_STATED_IN_PAPER__[R]"  # [R]
+    "state_precedence_consequence": "REVERSING_THE_PRECEDENCE_CHANGES_THE_(923,99,25)_TRIPLE"  # [D]
+    "unsupported_condition": "operator_or_variable_absent_from_public_implementation"  # [S]
+    "unsupported_count": 25  # [S]
+    "insufficient_condition": "supported AND |T_f| < 20"  # [S]
+    "insufficient_count": 99  # [S]
+    "scorable_condition": "supported AND |T_f| >= 20"  # [S]
+    "scorable_count": 923  # [S]
+    "non_scorable_count": 124  # [D]
+    "missing_result_imputation": null  # [S]
+    "retain_non_scorable_in_denominator": true  # [S]
+    "sign_partition_counts":
+      "positive": 671  # [S]
+      "negative": 252  # [S]
+    "median_mean_rank_ic": 0.0148  # [S]
+    "distribution_mean_reported": false  # [S]
+    "distribution_sd_reported": false  # [S]
+    "conservation_invariant": "scorable + insufficient + unsupported == denominator_total"  # [D]
+  "P05_EVALUATOR_VERSIONING_PARAMETERS":
+    "version_1_defect": "conditional operator interprets a panel as one Boolean when the true branch is scalar"  # [S]
+    "version_1_error_count": 57  # [S]
+    "error_classification": "NUMERICAL_ERROR"  # [S]
+    "version_2_change": "scalar broadcasting"  # [S]
+    "version_2_semantics_constraint": "PRESERVE_EXISTING_ELEMENTWISE_CONDITIONAL_SEMANTICS"  # [S]
+    "version_1_preserved_unmodified": true  # [S]
+    "re_evaluation_scope": "ALL_1047"  # [S]
+    "failure_only_rerun_permitted": false  # [S]
+    "unchanged_record_count": 990  # [S]
+    "unchanged_verification_mode": "DIRECT_COMPARISON_NOT_ASSUMPTION"  # [S]
+    "newly_scorable_after_fix": 56  # [S]
+    "residual_insufficient_after_fix": 1  # [S]
+    "defect_selection_consequence_quantified": false  # [S]
+    "defect_selection_consequence_self_audit": "RECOMPUTE_MEAN_RANK_IC_OF_THE_56_VS_THE_867; REPORT_WHETHER_THE_DEFECT_DESTROYED_HIGH_OR_LOW_SIGNAL"  # [R]
+  "P06_COHORT_ADMISSION_PARAMETERS":
+    "governs": "3,114 preserved rows -> 1,047 frozen IDs under the stated IS screen"  # [S]
+    "source_row_count": 3114  # [S]
+    "cohort_size": 1047  # [S]
+    "sharpe_min": 2.0  # [S]
+    "sharpe_comparator": ">="  # [S]
+    "fitness_min": 0.0  # [S]
+    "fitness_comparator": ">="  # [S]
+    "turnover_max": 500.0  # [S]
+    "turnover_comparator": "<="  # [S]
+    "boundary_convention": "INCLUSIVE_AS_STATED__EXECUTED_STRICTNESS_UNBOUND"  # [R]
+    "screen_scope": "IS_ONLY"  # [S]
+    "workflow_specific_gates_named":
+      - "IC"  # [S]
+      - "complexity"  # [S]
+      - "pool_score"  # [S]
+      - "correlation"  # [S]
+    "workflow_specific_gates_enabled": "UNDISCLOSED"  # [S]
+    "identical_effective_policy_established": false  # [D]
+    "deduplication_key": "CANONICAL_AST_IDENTITY"  # [R]
+    "deduplication_canonicalization":
+      "parse_to_ast": true  # [R]
+      "normalise_whitespace": true  # [R]
+      "apply_commutativity": "symmetric_operators_only"  # [R]
+      "push_negation_through": false  # [R]
+      "source": "NOT_STATED_IN_PAPER__[R]"  # [R]
+    "deduplication_timing": "BEFORE_FREEZE_USING_IS_DATA_ONLY"  # [S]
+  "P07_FREEZE_PROTOCOL_PARAMETERS":
+    "freeze_before_any_scoring": true  # [S]
+    "freeze_timestamp_required": true  # [R]
+    "freeze_timestamp_timezone_aware": true  # [R]
+    "freeze_hash_algorithm": "SHA-256"  # [R]
+    "freeze_hash_covers": "ORDERED_ID_LIST"  # [R]
+    "freeze_serialization_format": "TWO_DECIMAL_PER_SLOT_CANONICAL_JSON"  # [R]
+    "freeze_serialization_bytes_encoding": "utf-8"  # [R]
+    "freeze_serialization_line_terminator": "LF"  # [R]
+    "freeze_serialization_id_ordering": "BY_COHORT_RANK_ASCENDING"  # [R]
+    "ids_immutable_after_freeze": true  # [S]
+    "no_id_removed_on_score": true  # [S]
+    "all_ids_receive_outcome": true  # [S]
+    "scope_disclaimers":
+      "is_census_of_generated_candidates": false  # [S]
+      "is_historically_blind_holdout": false  # [S]
+      "is_matched_replay_of_keep_totals": false  # [S]
+    "universe_constituents_disclosed": false  # [S]
+    "is_screen_window_disclosed": false  # [S]
+  "P08_CLEAN_OOS_PROTOCOL_PARAMETERS":
+    "status": "PENDING"  # [S]
+    "requirements_ordered":
+      - "recover_and_hash_complete_pre_oos_pool"  # [S]
+      - "pre_specify_is_only_screen"  # [S]
+      - "deduplicate_using_is_data_only"  # [S]
+      - "freeze_expression_list_before_oos_access"  # [S]
+      - "checkpoint_every_response"  # [S]
+      - "preserve_every_outcome_and_error_regardless_of_sign"  # [S]
+    "requirement_ordering_load_bearing": true  # [R]
+    "sign_filter_permitted": false  # [S]
+    "success_only_logging_permitted": false  # [S]
+    "per_response_checkpoint_required": true  # [S]
+    "claim_restoration_gated_on_completion": true  # [S]
+    "acceptance_criteria_published": false  # [S]
+  "P09_LEVEL1_AUDIT_PARAMETERS":
+    "governs": "§4: metric population, denominator, taxonomy, attribution, state"  # [D]
+    "missing_cell_encoding": "UNAVAILABLE_AT_STAGE"  # [S]
+    "harmonised_denominator": "rounds"  # [S]
+    "rounds_per_run": 20  # [S]
+    "sole_legitimate_cross_run_statistic": "keep_decisions / rounds"  # [D]
+    "pipeline_collector_population": "KEPT_CANDIDATE_VECTOR"  # [S]
+    "swarm_collector_population": "POSITIVE_PER_ROUND_MAXIMA"  # [S]
+    "mean_recomputation_targets":
+      "pipeline":
+        "n": 67  # [D]
+        "expected_mean": 2.227  # [D]
+        "expected_display": 2.23  # [D]
+      "swarm":
+        "n": 20  # [D]
+        "expected_mean": 2.433  # [D]
+        "expected_display": 2.43  # [D]
+    "display_precision_decimals": 3  # [S]
+    "extremum_populations":
+      "pipeline_kept_max": 2.449  # [S]
+      "pipeline_round_summary_max": 3.171  # [S]
+      "swarm_round_max": 4.206  # [S]
+      "swarm_max_need_not_be_kept": true  # [S]
+    "denominator_constructs":
+      "pipeline_234": "SUCCESS_ONLY"  # [S]
+      "pipeline_289": "POST_EXECUTION_COUNT"  # [D]
+      "swarm_816": "RETURNED_INCL_FAILURES_AND_SIGN_FLIPS"  # [S]
+      "swarm_887": "PRE_EXECUTION_GENERATION_COUNT"  # [D]
+      "common_denominator_exists": false  # [S]
+    "pipeline_implied_failure_count": 55  # [D]
+    "anomaly_rounds_to_enumerate": 6  # [S]
+    "category_taxonomy_pipeline": 4  # [S]
+    "category_taxonomy_swarm_configured": 12  # [S]
+    "category_taxonomy_swarm_productive": 2  # [S]
+    "category_comparison_defined": false  # [D]
+    "attribution_residuals":
+      "S_A":
+        "run_counter": 20  # [S]
+        "leaderboard": 8  # [S]
+        "residual": 12  # [S]
+      "S_B":
+        "run_counter": 11  # [S]
+        "leaderboard": 9  # [S]
+        "residual": 2  # [S]
+    "residual_may_be_recorded_as_zero": false  # [S]
+    "residual_cause_reconstructed": false  # [S]
+    "state_provenance_flags":
+      "initial_pool_snapshot_taken": false  # [S]
+      "reset_binding_between_arms": false  # [S]
+      "execution_order":
+        - "P"  # [S]
+        - "S"  # [S]
+      "executed_commit_bound_to_report": false  # [S]
+    "controlled_experiment_established": false  # [D]
+  "P10_RETENTION_AUDIT_PARAMETERS":
+    "governs": "checkpoint (2,016) vs catalog (1,837): 368 / 189 / 1,648"  # [D]
+    "preliminary_screen_strictness": "LOOSER_THAN_STATED_IS_RULE"  # [S]
+    "preliminary_screen_predicate": "UNDISCLOSED"  # [S]
+    "write_condition": "oos_sharpe > 0"  # [S]
+    "write_disposition_on_fail": "DROP_BEFORE_WRITE"  # [S]
+    "checkpoint_size": 2016  # [S]
+    "checkpoint_negative_rows": 368  # [S]
+    "catalog_size": 1837  # [S]
+    "catalog_non_positive_rows": 0  # [S]
+    "catalog_rows_passing_stated_is_rule": 1037  # [S]
+    "partition_keys":
+      - "checkpoint_only"  # [S]
+      - "catalog_only"  # [S]
+      - "intersection"  # [S]
+    "checkpoint_only_count": 368  # [S]
+    "checkpoint_only_all_negative": true  # [S]
+    "catalog_only_count": 189  # [S]
+    "catalog_only_all_positive": true  # [S]
+    "intersection_count": 1648  # [S]
+    "intersection_sign_disagreements": 0  # [S]
+    "sign_alignment_is_deterministic": true  # [D]
+    "identification_statement":
+      - "P(sign == negative | checkpoint_only) == 1.000   # 368/368"  # [D]
+      - "P(sign == positive | catalog_only)    == 1.000   # 189/189"  # [D]
+      - "P(sign disagreement | intersection)   == 0.000   # 0/1648"  # [D]
+    "catalog_source_superset_of_checkpoint": true  # [D]
+    "catalog_source_superset_reason": "|R \\ C| = 189 > 0 implies the writer's source pool strictly contains the checkpoint"  # [D]
+    "catalog_source_pool_size": "UNDISCLOSED"  # UNDISCLOSED
+    "identity_relation_must_match_cohort": true  # [R]
+    "closure_tests":
+      - "2016 == 368 + 1648"  # [D]
+      - "1837 == 189 + 1648"  # [D]
+  "P11_ACQUISITION_PARAMETERS":
+    "governs": "the 40 x 727 x 2 snapshot and its six integrity checks"  # [D]
+    "provider": "BaoStock"  # [S]
+    "provider_version": "0.9.3"  # [S]
+    "provider_url": "UNDISCLOSED"  # [S]
+    "provider_sdk_license_is_redistribution_grant": false  # [S]
+    "universe_size": 40  # [S]
+    "universe_label": "40-stock convenience universe"  # [S]
+    "universe_ordering": "FIXED_AND_IDENTICAL_ACROSS_VIEWS"  # [S]
+    "universe_constituents_disclosed": false  # [S]
+    "universe_constitution_source": "UNSPECIFIED IN MANUSCRIPT"  # [D]
+    "trading_date_count": 727  # [S]
+    "date_span_years":
+      - 2023  # [S]
+      - 2024  # [S]
+      - 2025  # [S]
+    "calendar_year_row_counts":
+      2023: 242  # [D]
+      2024: 242  # [D]
+      2025: 243  # [D]
+    "adjustment_views":
+      - "unadjusted"  # [S]
+      - "provider_adjusted"  # [S]
+    "file_count": 80  # [D]
+    "rows_per_bar_file": 727  # [D]
+    "feature_data_roles":
+      - "nominal_price"  # [S]
+      - "shares"  # [S]
+      - "nominal_traded_amount"  # [S]
+    "label_data_roles":
+      - "provider_adjusted_close"  # [S]
+    "adjusted_view_permitted_in_features": false  # [S]
+    "shared_fields_across_views":
+      - "quantity"  # [S]
+      - "tradable"  # [D]
+      - "tradestatus_raw"  # [R]
+    "view_identity_checks":
+      - "byte_hash"  # [S]
+      - "date_identity"  # [S]
+      - "stock_identity"  # [S]
+      - "adjustment_identity"  # [S]
+      - "shared_quantity_field"  # [S]
+      - "shared_trading_status_field"  # [S]
+    "require_all_files_pass": true  # [S]
+    "freeze_then_verify_then_score": true  # [R]
+    "retrieval_coherence_window": "<= 1 trading day"  # [R]
+    "retrieval_coherence_assertion": "MAX(retrieved) - MIN(retrieved) <= ONE_TRADING_DAY"  # [R]
+    "adjustment_factor_acquired": true  # [R]
+    "adjustment_factor_constancy_test": "P_adj_div_P_nom_constant_per_segment"  # [R]
+    "adjustment_factor_jump_at_corporate_action_only": true  # [R]
+    "adjustment_factor_is_paper_stated": false  # [D]
+  "P12_MASKING_PARAMETERS":
+    "masked_cell_count": 2  # [S]
+    "masked_value_representation": null  # [S]
+    "forward_fill_permitted": false  # [S]
+    "backward_fill_permitted": false  # [D]
+    "interpolation_permitted": false  # [D]
+    "stock_prefix_substitution_permitted": false  # [S]
+    "stock_count_after_masking": 40  # [S]
+    "file_count_after_masking": 80  # [S]
+    "survivorship_by_convenience_permitted": false  # [D]
+    "missing_observation_as_zero_permitted": false  # [D]
+  "P13_DSL_EVALUATOR_INTERFACE":
+    "dsl_kind": "functional price/volume DSL"  # [S]
+    "grammar_published": false  # [S]
+    "grammar": "UNDISCLOSED"  # [S]
+    "terminal_field_classes":
+      - "nominal price"  # [S]
+      - "shares"  # [S]
+      - "nominal traded amount"  # [S]
+      - "trading status"  # [S]
+    "conditional_operator_semantics": "ELEMENTWISE"  # [S]
+    "sign_flip_supported": true  # [S]
+    "sign_flip_semantics": "e -> -e"  # [R]
+    "operator_families_observed":
+      "time_series":
+        - "ts_mean"  # [I]
+        - "ts_rank"  # [I]
+        - "delta"  # [I]
+      "arithmetic":
+        - "div"  # [I]
+        - "sub"  # [I]
+        - "neg"  # [I]
+      "conditional": "elementwise conditional"  # [S]
+    "operator_status_note": "NAMES_ARE_ILLUSTRATIVE__[I]"  # [I]
+    "public_implementation_support_gap": 25  # [S]
+    "unsupported_records_retained_in_denominator": true  # [S]
+    "unsupported_identifiability": "REQUIRES_GRAMMAR__UNDISCLOSED"  # [D]
+    "native_metrics":
+      - "sharpe"  # [S]
+      - "fitness"  # [S]
+      - "turnover"  # [S]
+      - "IC"  # [S]
+      - "complexity"  # [S]
+      - "pool_score"  # [S]
+      - "correlation"  # [S]
+    "native_semantics_interchangeable_with_public": false  # [S]
+    "versioned_correction_applies_to_dsl_operator": "conditional"  # [S]
+  "P14_PIPELINE_ARCHITECTURE_PARAMETERS":
+    "rounds": 20  # [S]
+    "roles":
+      "researcher":
+        "emits": "search direction"  # [S]
+        "output_vocabulary_size": 4  # [S]
+      "implementor":
+        "emits": "DSL expressions"  # [S]
+        "invokes_evaluator_internally": true  # [S]
+      "reviewer":
+        "emits": "next-step suggestion"  # [S]
+        "llm_backed": true  # [S]
+        "fallback": "deterministic_rule"  # [S]
+        "fallback_rate_reported": false  # [S]
+      "selector":
+        "type": "programmatic"  # [S]
+        "llm_permits_admission": false  # [S]
+    "category_label_count": 4  # [S]
+    "generator_model_label": "Claude Opus 4.6"  # [S]
+    "label_source": "template_hardcoded"  # [S]
+    "verified_request_graph_recovered": false  # [S]
+    "is_model_quality_ranking": false  # [S]
+    "evaluator_shared_with_swarm": true  # [S]
+  "P15_SWARM_ARCHITECTURE_PARAMETERS":
+    "rounds": 20  # [S]
+    "specialist_count": 20  # [S]
+    "category_count": 12  # [S]
+    "productive_labels_with_keeps": 2  # [S]
+    "specialist_to_category_map": "UNDISCLOSED"  # [S]
+    "orchestrator_implementation_class": "UNDISCLOSED"  # [S]
+    "adaptive_allocation_weights":
+      "enabled": true  # [S]
+      "dimensionality": "UNDISCLOSED"  # [S]
+      "initialisation": "UNDISCLOSED"  # [S]
+      "update_rule": "UNDISCLOSED"  # [S]
+      "update_timescale": "FAST"  # [R]
+    "sign_flip_module":
+      "enabled": true  # [S]
+      "semantics": "e -> -e"  # [R]
+      "attribution_logged": false  # [S]
+      "attribution_reconstructed": false  # [S]
+    "prompt_revision":
+      "mode": "proposal"  # [S]
+      "applied": "UNDISCLOSED"  # [S]
+      "periodicity": "UNDISCLOSED"  # [S]
+      "timescale": "SLOW"  # [R]
+      "loop_closed_established": false  # [D]
+    "two_timescale_control_present": true  # [D]
+    "specialist_model_labels":
+      "S_A": "Claude Sonnet 4.5"  # [S]
+      "S_B": "Claude Opus 4.6"  # [S]
+    "label_source": "template_hardcoded"  # [S]
+    "verified_request_graph_recovered": false  # [S]
+    "evaluator_shared_with_pipeline": true  # [S]
+    "dsl_shared_with_pipeline": true  # [S]
+  "P16_COMPARISON_HARNESS_PARAMETERS":
+    "execution_order":
+      - "P"  # [S]
+      - "S"  # [S]
+    "initial_pool_snapshot_taken": false  # [S]
+    "initial_pool_hash_available": false  # [S]
+    "reset_binding_between_arms": false  # [S]
+    "compound_system_executed": true  # [D]
+    "budgets_equalised": false  # [S]
+    "budget_dimensions_to_equalise":
+      - "generations"  # [R]
+      - "evaluations"  # [R]
+      - "tokens"  # [R]
+      - "wall_clock"  # [R]
+    "executed_commit_bound_to_report": false  # [S]
+    "seeds_reported": "UNDISCLOSED"  # [S]
+    "more_seeds_would_repair": false  # [S]
+    "arm_state_independence_established": false  # [S]
+    "state_inheritance_mechanism": "UNDISCLOSED"  # UNDISCLOSED
+    "repair_prerequisites_ordered":
+      - "align_accounting_stages"  # [S]
+      - "align_selection_policies"  # [S]
+      - "bind_initial_state"  # [S]
+      - "bind_resource_budgets"  # [S]
+    "provenance_precedes_scale": true  # [D]
+  "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS":
+    "neural_network_training_present": false  # [S]
+    "layers": "NOT_APPLICABLE"  # [S]
+    "parameters_trained": 0  # [S]
+    "loss_function": null  # [S]
+    "optimiser": null  # [S]
+    "learning_rate": null  # [S]
+    "epochs": null  # [S]
+    "gradients_computed": false  # [S]
+    "total_rounds_per_arm": 20  # [S]
+    "evaluations_per_round": "UNDISCLOSED"  # [S]
+    "generations_cap": "UNDISCLOSED"  # [S]
+    "evaluations_cap": "UNDISCLOSED"  # [S]
+    "token_cap": "UNDISCLOSED"  # [S]
+    "wall_clock_cap": "UNDISCLOSED"  # [S]
+    "allocation_weight_update_rule": "UNDISCLOSED"  # [S]
+    "prompt_revision_periodicity": "UNDISCLOSED"  # [S]
+    "early_stopping": "UNDISCLOSED"  # [S]
+  "P18_VERIFICATION_PARAMETERS":
+    "files_to_verify": 80  # [S]
+    "spot_check_cell_count": 9  # [S]
+    "spot_check_cell_selection_timing": "A_PRIORI"  # [R]
+    "spot_check_independence": "SEPARATE_TIE_RANKING_PEARSON_IMPLEMENTATION"  # [S]
+    "spot_check_pass_requirement": "9_of_9"  # [R]
+    "spot_check_pass_count_reported": false  # [D]
+    "spot_check_targets_instrument_not_results": true  # [S]
+    "identity_comparison_mode": "BIT_IDENTICAL_OR_DECLARED_TOLERANCE"  # [R]
+    "tolerance_audit_recomputation": "THREE_DECIMALS"  # [S]
+    "tolerance_audit_recomputation_basis": "PAPER_DISPLAY_PRECISION"  # [R]
+    "tolerance_nine_cell": "UNDISCLOSED"  # UNDISCLOSED
+    "tolerance_nine_cell_source": "NOT_STATED_IN_PAPER"  # [D]
+    "reverification_at_study_close": true  # [R]
+  "P19_REFERENCE_PREREGISTRATION_PARAMETERS":
+    "preregistered_before_outcome_computation": true  # [S]
+    "signs_selected_on_scores": false  # [S]
+    "report_all_regardless_of_sign": true  # [S]
+    "none_dropped_or_reoriented_post_hoc": true  # [S]
+    "promoted_to_profitability_claim": false  # [S]
+    "matched_sample_comparator_available": false  # [S]
+    "incremental_skill_estimated": false  # [S]
+    "valid_dates_per_reference": 480  # [S]
+    "same_snapshot_as_cohort": true  # [S]
+    "same_scoring_convention_as_cohort": true  # [S]
+    "signals":
+      -
+        "id": "r1"  # [S]
+        "name": "nominal close level"  # [S]
+        "formula": "close"  # [S]
+        "orientation": "as-is"  # [S]
+        "horizon": null  # [S]
+        "target_mean_rank_ic": -0.0218  # [S]
+      -
+        "id": "r2"  # [S]
+        "name": "share volume"  # [S]
+        "formula": "volume"  # [S]
+        "orientation": "as-is"  # [S]
+        "horizon": null  # [S]
+        "target_mean_rank_ic": 0.0234  # [S]
+      -
+        "id": "r3"  # [S]
+        "name": "nominal traded amount"  # [S]
+        "formula": "amount"  # [S]
+        "orientation": "as-is"  # [S]
+        "horizon": null  # [S]
+        "target_mean_rank_ic": 0.0021  # [S]
+      -
+        "id": "r4"  # [S]
+        "name": "one-day nominal reversal"  # [S]
+        "formula": "neg(close / lag(close, 1) - 1)"  # [S]
+        "orientation": "negate"  # [S]
+        "horizon": 1  # [S]
+        "target_mean_rank_ic": -0.0007  # [S]
+      -
+        "id": "r5"  # [S]
+        "name": "five-day nominal reversal"  # [S]
+        "formula": "neg(close / lag(close, 5) - 1)"  # [S]
+        "orientation": "negate"  # [S]
+        "horizon": 5  # [S]
+        "target_mean_rank_ic": -0.0155  # [S]
+      -
+        "id": "r6"  # [S]
+        "name": "twenty-day nominal change"  # [S]
+        "formula": "close / lag(close, 20) - 1"  # [S]
+        "orientation": "as-is"  # [S]
+        "horizon": 20  # [S]
+        "target_mean_rank_ic": 0.0229  # [S]
+    "signal_formula_status": "EQUIVALENCE_CLASS__PAPER_SPECIFIES_CONSTRUCT_IN_WORDS_ONLY"  # [R]
+    "post_hoc_status_disclosed": true  # [S]
+  "P20_CLAIM_CONTROLS":
+    "architecture_ranking_permitted": false  # [S]
+    "profitability_claim_permitted": false  # [S]
+    "annualisation_permitted": false  # [S]
+    "trading_sharpe_labelling_permitted": false  # [S]
+    "significance_test_on_aggregate_permitted": false  # [S]
+    "oos_or_generalization_claim_permitted": false  # [S]
+    "incremental_agent_skill_claim_permitted": false  # [S]
+    "matched_sample_outperformance_permitted": false  # [S]
+    "total_return_claim_permitted": false  # [S]
+    "executable_pnl_claim_permitted": false  # [S]
+    "model_quality_ranking_permitted": false  # [S]
+    "backend_identity_claim_permitted": false  # [S]
+    "other_systems_implicated": false  # [S]
+    "imputed_zero_alpha_permitted": false  # [S]
+    "missing_outcome_omitted_from_denominator": false  # [S]
+    "residual_reported_as_zero": false  # [S]
+    "native_and_public_metrics_concatenated": false  # [D]
+  "P21_LLM_CONFIGURATION":
+    "llm_names_reported_as_labels_only":
+      "pipeline_generator":
+        "label": "Claude Opus 4.6"  # [S]
+        "label_source": "template_hardcoded"  # [S]
+      "swarm_S_A_specialists":
+        "label": "Claude Sonnet 4.5"  # [S]
+        "label_source": "template_hardcoded"  # [S]
+      "swarm_S_B_specialists":
+        "label": "Claude Opus 4.6"  # [S]
+        "label_source": "template_hardcoded"  # [S]
+      "pipeline_reviewer":
+        "label": "UNDISCLOSED"  # UNDISCLOSED
+        "label_source": "UNDISCLOSED"  # UNDISCLOSED
+      "verified_backend_identity": false  # [S]
+      "request_graph_recovered": false  # [S]
+    "llm_api_credentials":
+      "api_key_env_var": "UNDISCLOSED_API_KEY_ENV_VAR"  # [I]
+      "api_base_url": "UNDISCLOSED"  # UNDISCLOSED
+      "auth_scheme": "UNDISCLOSED"  # UNDISCLOSED
+      "api_key_literal_present": false  # [R]
+    "llm_inference_settings":
+      "temperature": "UNDISCLOSED"  # UNDISCLOSED
+      "top_p": "UNDISCLOSED"  # UNDISCLOSED
+      "top_k": "UNDISCLOSED"  # UNDISCLOSED
+      "max_output_tokens": "UNDISCLOSED"  # UNDISCLOSED
+      "sampling_seed": "UNDISCLOSED"  # UNDISCLOSED
+      "stop_sequences": "UNDISCLOSED"  # UNDISCLOSED
+      "retry_policy": "UNDISCLOSED"  # UNDISCLOSED
+      "backoff_policy": "UNDISCLOSED"  # UNDISCLOSED
+      "request_timeout_seconds": "UNDISCLOSED"  # UNDISCLOSED
+      "context_assembly_rule": "UNDISCLOSED"  # UNDISCLOSED
+      "response_parsing_rule": "UNDISCLOSED"  # UNDISCLOSED
+      "determinism_guaranteed": false  # [R]
+    "prompt_templates":
+      "system_prompt": "UNDISCLOSED"  # UNDISCLOSED
+      "user_prompt_template": "UNDISCLOSED"  # UNDISCLOSED
+      "all_prompts_illustrative": true  # [R]
+      "consequence_if_used": "LABEL_ALL_OUTPUTS_NON_IDENTICAL"  # [R]
+      "prompt_shape_illustrative_for":
+        - "researcher_system"  # [I]
+        - "implementor_system"  # [I]
+        - "reviewer_system"  # [I]
+        - "rule_fallback_contract"  # [I]
+        - "specialist_system"  # [I]
+        - "prompt_revision_system"  # [I]
+  "P22_RAW_SCHEMA_CONVENTIONS":
+    "string_dtype_policy": "use 'string'/'object' NOT 'category' for identities"  # [R]
+    "nullable_integer_dtype_policy": "use 'Int64' with pd.NA, NEVER int64 with a 0 sentinel"  # [R]
+    "boolean_dtype_policy": "use nullable 'boolean' where a flag can be unknown"  # [R]
+    "timestamp_dtype_policy": "datetime64[ns, Asia/Shanghai] for retrieval stamps"  # [R]
+    "unavailable_value": null  # [R]
+    "prohibited_sentinels":
+      - 0  # [R]
+      - -1  # [R]
+      - ""  # [R]
+      - "NA_FILL"  # [R]
+      - "n/a"  # [R]
+    "leakage_sentinel_field": "oos_sharpe"  # [R]
+  "P23_SCHEMA_RUN_REPORT_TOTALS":
+    "estimated_row_count": 3  # [S]
+    "column_schema":
+      "run_id":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "rounds":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 20 all arms"  # [S]
+      "keep_decisions":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 67/20/11"  # [S]
+      "tested_candidates":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 289 for P only"  # [S]
+      "successful_outcomes":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 234 for P only"  # [S]
+      "generated_proposals":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 887/876 swarm"  # [S]
+      "returned_outcomes":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 816/461 swarm"  # [S]
+      "keep_decisions_per_round":
+        "dtype": "float64"  # [R]
+        "src": "[D] 3.35/1.00/0.55"  # [D]
+      "category_label_count_configured":
+        "dtype": "Int64"  # [R]
+        "src": "[REVISED]"  # [R]
+      "category_label_count_productive":
+        "dtype": "Int64"  # [R]
+        "src": "[REVISED]"  # [R]
+      "generator_model_label":
+        "dtype": "string"  # [R]
+        "src": "[S] reported only"  # [S]
+      "label_source":
+        "dtype": "string"  # [R]
+        "src": "[S] template_hardcoded"  # [S]
+      "verified_request":
+        "dtype": "boolean"  # [R]
+        "src": "[S] False"  # [S]
+    "example_rows":
+      -
+        "run_id": "P"  # [S]
+        "rounds": 20  # [S]
+        "keep_decisions": 67  # [S]
+        "tested_candidates": 289  # [S]
+        "successful_outcomes": 234  # [S]
+        "generated_proposals": null  # [S]
+        "returned_outcomes": null  # [S]
+        "keep_decisions_per_round": 3.35  # [S]
+        "category_label_count_configured": 4  # [S]
+        "category_label_count_productive": 4  # [S]
+        "generator_model_label": "Claude Opus 4.6"  # [S]
+        "label_source": "template_hardcoded"  # [S]
+        "verified_request": false  # [S]
+      -
+        "run_id": "S-A"  # [S]
+        "rounds": 20  # [S]
+        "keep_decisions": 20  # [S]
+        "tested_candidates": null  # [S]
+        "successful_outcomes": null  # [S]
+        "generated_proposals": 887  # [S]
+        "returned_outcomes": 816  # [S]
+        "keep_decisions_per_round": 1.0  # [S]
+        "category_label_count_configured": 12  # [S]
+        "category_label_count_productive": 2  # [S]
+        "generator_model_label": "Claude Sonnet 4.5"  # [S]
+        "label_source": "template_hardcoded"  # [S]
+        "verified_request": false  # [S]
+      -
+        "run_id": "S-B"  # [S]
+        "rounds": 20  # [S]
+        "keep_decisions": 11  # [S]
+        "tested_candidates": null  # [S]
+        "successful_outcomes": null  # [S]
+        "generated_proposals": 876  # [S]
+        "returned_outcomes": 461  # [S]
+        "keep_decisions_per_round": 0.55  # [S]
+        "category_label_count_configured": 12  # [S]
+        "category_label_count_productive": 2  # [S]
+        "generator_model_label": "Claude Opus 4.6"  # [S]
+        "label_source": "template_hardcoded"  # [S]
+        "verified_request": false  # [S]
+  "P24_SCHEMA_RUN_REPORT_ROUNDS":
+    "estimated_row_count": 60  # [D]
+    "column_schema":
+      "run_id":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "round_index":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 1..20"  # [S]
+      "category_label":
+        "dtype": "string"  # [R]
+        "src": "[S] cardinality only"  # [S]
+      "keep_decisions":
+        "dtype": "Int64"  # [R]
+        "src": "[S] sums to 67/20/11"  # [S]
+      "tested_candidates":
+        "dtype": "Int64"  # [R]
+        "src": "[S] sums to 289"  # [S]
+      "successful_outcomes":
+        "dtype": "Int64"  # [R]
+        "src": "[S] sums to 234"  # [S]
+      "generated_proposals":
+        "dtype": "Int64"  # [R]
+        "src": "[S] sums to 887/876"  # [S]
+      "returned_outcomes":
+        "dtype": "Int64"  # [R]
+        "src": "[S] sums to 816/461"  # [S]
+      "reviewer_next_step_source":
+        "dtype": "string"  # [R]
+        "src": "[R] llm | rule_fallback"  # [R]
+      "fallback_triggered":
+        "dtype": "boolean"  # [R]
+        "src": "[R] rate unreported"  # [R]
+    "sum_closures_required":
+      "sum_keep_decisions_P": 67  # [S]
+      "sum_keep_decisions_S_A": 20  # [S]
+      "sum_keep_decisions_S_B": 11  # [S]
+      "sum_tested_candidates_P": 289  # [S]
+      "sum_successful_outcomes_P": 234  # [S]
+      "sum_generated_proposals_S_A": 887  # [S]
+      "sum_generated_proposals_S_B": 876  # [S]
+      "sum_returned_outcomes_S_A": 816  # [S]
+      "sum_returned_outcomes_S_B": 461  # [S]
+    "enumerated_anomaly_rounds": 6  # [S]
+  "P25_SCHEMA_COLLECTOR_A_PIPELINE":
+    "estimated_row_count": 67  # [S]
+    "record_type": "VECTOR over ADMITTED candidates"  # [S]
+    "population": "conditional on d(e)=1"  # [D]
+    "recoverable_mean": 2.227  # [D]
+    "column_schema":
+      "run_id":
+        "dtype": "string"  # [R]
+        "src": "[S] always 'P'"  # [S]
+      "round_index":
+        "dtype": "Int64"  # [R]
+        "src": "[S]"  # [S]
+      "decision_rank":
+        "dtype": "Int64"  # [R]
+        "src": "[R]"  # [R]
+      "expression_id":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "sharpe":
+        "dtype": "float64"  # [R]
+        "src": "[S] admitted-candidate Sharpe"  # [S]
+  "P26_SCHEMA_COLLECTOR_B_SWARM":
+    "estimated_row_count": 40  # [D]
+    "record_type": "SCALAR extremum per ROUND"  # [S]
+    "population": "positive order statistics"  # [D]
+    "recoverable_mean": 2.433  # [D]
+    "operations":
+      - "collapse_to_maximum"  # [S]
+      - "retain_positive_only"  # [S]
+    "information_lost_at": "LOGGING_TIME_NOT_ANALYSIS_TIME"  # [D]
+    "column_schema":
+      "run_id":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "round_index":
+        "dtype": "Int64"  # [R]
+        "src": "[S]"  # [S]
+      "max_sharpe_positive":
+        "dtype": "float64"  # [R]
+        "src": "[S]"  # [S]
+      "max_is_from_kept":
+        "dtype": "boolean"  # [R]
+        "src": "[R] need not be kept"  # [R]
+  "P27_SCHEMA_PRESERVED_INPUT_ROWS":
+    "estimated_row_count": 3114  # [S]
+    "column_schema":
+      "row_id":
+        "dtype": "Int64"  # [R]
+        "src": "[R]"  # [R]
+      "expression_id":
+        "dtype": "string"  # [R]
+        "src": "[R] canonical dedup key"  # [R]
+      "expression_text":
+        "dtype": "string"  # [R]
+        "src": "[S] DSL source"  # [S]
+      "category_label":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "origin_run":
+        "dtype": "string"  # [R]
+        "src": "[S] P | S-A | S-B"  # [S]
+      "is_sharpe":
+        "dtype": "float64"  # [R]
+        "src": "[S] >= 2"  # [S]
+      "is_fitness":
+        "dtype": "float64"  # [R]
+        "src": "[S] >= 0"  # [S]
+      "is_turnover":
+        "dtype": "float64"  # [R]
+        "src": "[S] <= 500"  # [S]
+      "is_ic":
+        "dtype": "float64"  # [R]
+        "src": "[S]"  # [S]
+      "is_complexity":
+        "dtype": "Int64"  # [R]
+        "src": "[S]"  # [S]
+      "is_pool_score":
+        "dtype": "float64"  # [R]
+        "src": "[S]"  # [S]
+      "is_correlation":
+        "dtype": "float64"  # [R]
+        "src": "[S]"  # [S]
+      "oos_sharpe":
+        "dtype": "float64"  # [R]
+        "src": "[S] MUST be null pre-freeze"  # [S]
+      "oos_computed_at":
+        "dtype": "datetime64[ns]"  # [R]
+        "src": "[S] MUST be NaT pre-freeze"  # [S]
+      "operators_used":
+        "dtype": "object"  # [R]
+        "src": "[REVISED]"  # [R]
+      "parse_status":
+        "dtype": "string"  # [R]
+        "src": "[REVISED] parsed | parse_failed"  # [R]
+    "unsupported_identifiability": "REQUIRES_GRAMMAR__UNDISCLOSED"  # [D]
+  "P28_SCHEMA_NATIVE_OOS_CHECKPOINT":
+    "estimated_row_count": 2016  # [S]
+    "negative_row_count": 368  # [S]
+    "sign_complete": true  # [S]
+    "column_schema":
+      "expression_id":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "expression_text":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "checkpoint_rank":
+        "dtype": "Int64"  # [R]
+        "src": "[R]"  # [R]
+      "oos_sharpe_native":
+        "dtype": "float64"  # [R]
+        "src": "[S] the audited variable"  # [S]
+      "oos_sign":
+        "dtype": "string"  # [R]
+        "src": "[D] sign(oos_sharpe_native)"  # [D]
+      "is_sharpe_native":
+        "dtype": "float64"  # [R]
+        "src": "[REVISED]"  # [R]
+      "is_fitness_native":
+        "dtype": "float64"  # [R]
+        "src": "[REVISED]"  # [R]
+      "is_turnover_native":
+        "dtype": "float64"  # [R]
+        "src": "[REVISED]"  # [R]
+      "retention_status":
+        "dtype": "string"  # [R]
+        "src": "[R] retained_in_catalog | dropped_before_write"  # [R]
+  "P29_SCHEMA_OUTCOME_FILTERED_CATALOG":
+    "estimated_row_count": 1837  # [S]
+    "non_positive_oos_rows": 0  # [S]
+    "rows_passing_stated_is_rule": 1037  # [S]
+    "catalog_only_rows_all_positive": 189  # [S]
+    "column_schema":
+      "expression_id":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "expression_text":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "oos_sharpe_native":
+        "dtype": "float64"  # [R]
+        "src": "[S] STRICTLY > 0 by construction"  # [S]
+      "written":
+        "dtype": "boolean"  # [R]
+        "src": "[R]"  # [R]
+      "passes_stated_is_rule":
+        "dtype": "boolean"  # [R]
+        "src": "[D] 1037 True"  # [D]
+      "member_of_checkpoint":
+        "dtype": "boolean"  # [R]
+        "src": "[D] 1648 True"  # [D]
+  "P30_SCHEMA_RUNNER_CONTROL":
+    "record_count": 1  # [R]
+    "fields":
+      "preliminary_screen.strictness_vs_stated_rule":
+        "value": "looser"  # [S]
+        "src": "[S]"  # [S]
+      "preliminary_screen.exact_predicate":
+        "value": "UNDISCLOSED"  # UNDISCLOSED
+        "src": "[S]"  # [S]
+      "write_condition.predicate":
+        "value": "oos_sharpe > 0"  # [S]
+        "src": "[S]"  # [S]
+      "write_condition.on_fail":
+        "value": "DROP_BEFORE_WRITE"  # [S]
+        "src": "[S]"  # [S]
+      "stated_is_rule.sharpe_min":
+        "value": 2.0  # [S]
+        "src": "[S]"  # [S]
+      "stated_is_rule.fitness_min":
+        "value": 0.0  # [S]
+        "src": "[S]"  # [S]
+      "stated_is_rule.turnover_max":
+        "value": 500.0  # [S]
+        "src": "[S]"  # [S]
+  "P31_SCHEMA_FROZEN_COHORT":
+    "estimated_row_count": 1047  # [S]
+    "meta_fields":
+      "freeze_id":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "freeze_timestamp":
+        "dtype": "datetime64[ns, Asia/Shanghai]"  # [R]
+        "src": "[R]"  # [R]
+      "cohort_hash":
+        "dtype": "string"  # [R]
+        "src": "[R] SHA-256"  # [R]
+      "source_rows":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 3114"  # [S]
+      "cohort_size":
+        "dtype": "Int64"  # [R]
+        "src": "[S] 1047"  # [S]
+      "dedup_key":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "admission_rule":
+        "dtype": "string"  # [R]
+        "src": "[S] IS only"  # [S]
+      "oos_used_in_admission":
+        "dtype": "bool"  # [R]
+        "src": "[S] False"  # [S]
+    "disclaimer_fields":
+      "is_census_of_generated_candidates":
+        "value": false  # [S]
+        "src": "[S]"  # [S]
+      "is_historically_blind_holdout":
+        "value": false  # [S]
+        "src": "[S]"  # [S]
+      "is_matched_replay_of_keep_totals":
+        "value": false  # [S]
+        "src": "[S]"  # [S]
+    "column_schema":
+      "cohort_rank":
+        "dtype": "Int64"  # [R]
+        "src": "[R] enters the hash"  # [R]
+      "expression_id":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "expression_text":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "category_label":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "origin_run":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+  "P32_SCHEMA_EVALUATOR_METRIC_VECTORS":
+    "estimated_row_count": "UNDISCLOSED"  # [S]
+    "column_schema":
+      "expression_id":
+        "dtype": "string"  # [R]
+        "src": "[R]"  # [R]
+      "sharpe":
+        "dtype": "float64"  # [R]
+        "src": "[S] native"  # [S]
+      "fitness":
+        "dtype": "float64"  # [R]
+        "src": "[S] native"  # [S]
+      "turnover":
+        "dtype": "float64"  # [R]
+        "src": "[S] native"  # [S]
+      "ic":
+        "dtype": "float64"  # [R]
+        "src": "[S] native, NOT public rank-IC"  # [S]
+      "complexity":
+        "dtype": "Int64"  # [R]
+        "src": "[S]"  # [S]
+      "pool_score":
+        "dtype": "float64"  # [R]
+        "src": "[S]"  # [S]
+      "correlation":
+        "dtype": "float64"  # [R]
+        "src": "[S]"  # [S]
+  "P33_SCHEMA_TRADING_CALENDAR":
+    "estimated_row_count": 727  # [S]
+    "column_schema":
+      "row_index":
+        "dtype": "Int64"  # [R]
+        "src": "[R] dense 1..727"  # [R]
+      "trade_date":
+        "dtype": "datetime64[ns]"  # [R]
+        "src": "[S]"  # [S]
+      "year":
+        "dtype": "Int64"  # [R]
+        "src": "[D]"  # [D]
+      "in_label_window":
+        "dtype": "boolean"  # [R]
+        "src": "[S] 2024-2025 -> True"  # [S]
+      "label_available":
+        "dtype": "boolean"  # [R]
+        "src": "[D] row_index+5 <= 727"  # [D]
+    "label_availability_rule": "row_index + 5 <= 727"  # [D]
+    "terminal_unlabelled_rows":
+      - 723  # [D]
+      - 724  # [D]
+      - 725  # [D]
+      - 726  # [D]
+      - 727  # [D]
+    "example_rows_REVISED":
+      -
+        "row_index": 1  # [I]
+        "trade_date": "2023-01-03"  # [I]
+        "year": 2023  # [I]
+        "in_label_window": false  # [I]
+        "label_available": false  # [I]
+      -
+        "row_index": 2  # [I]
+        "trade_date": "2023-01-04"  # [I]
+        "year": 2023  # [I]
+        "in_label_window": false  # [I]
+        "label_available": false  # [I]
+      -
+        "row_index": 723  # [I]
+        "trade_date": "2025-12-25"  # [I]
+        "year": 2025  # [I]
+        "in_label_window": true  # [I]
+        "label_available": false  # [I]
+      -
+        "row_index": 727  # [I]
+        "trade_date": "2025-12-31"  # [I]
+        "year": 2025  # [I]
+        "in_label_window": true  # [I]
+        "label_available": false  # [I]
+    "arithmetic_note": "723 + 5 = 728 > 727 therefore label_available = False"  # [D]
+  "P34_SCHEMA_MASK_REGISTER":
+    "estimated_row_count": 2  # [S]
+    "column_schema":
+      "stock_code":
+        "dtype": "string"  # [R]
+        "src": "[S]"  # [S]
+      "trade_date":
+        "dtype": "datetime64[ns]"  # [R]
+        "src": "[S]"  # [S]
+      "reason":
+        "dtype": "string"  # [R]
+        "src": "[R] non_trading_stock_day"  # [R]
+      "treatment":
+        "dtype": "string"  # [R]
+        "src": "[S] 'MASKED'"  # [S]
+      "forward_fill":
+        "dtype": "boolean"  # [R]
+        "src": "[S] must be False"  # [S]
+      "drop_stock":
+        "dtype": "boolean"  # [R]
+        "src": "[S] must be False"  # [S]
+    "invariants":
+      "mask_count": 2  # [S]
+      "masked_value_is_null_not_zero": true  # [D]
+      "any_forward_fill_operation": false  # [S]
+      "stock_count_after_masking": 40  # [S]
+      "file_count_after_masking": 80  # [S]
+  "P35_DATA_PREPROCESSING_PARAMETERS":
+    "ingest_ordering":
+      - "verify_80_files"  # [R]
+      - "separate_views"  # [R]
+      - "mask_non_trading_cells"  # [R]
+      - "build_labels_from_adjusted_close"  # [R]
+      - "rank_and_gate_per_date"  # [R]
+      - "aggregate_per_factor"  # [R]
+      - "assign_exactly_one_ledger_state"  # [R]
+    "view_separation_enforced_before_join": true  # [S]
+    "shared_field_agreement_check_before_use": true  # [S]
+    "alignment_key":
+      - "stock_code"  # [R]
+      - "trade_date"  # [R]
+    "date_index_construction": "DENSE_ROW_INDEX_OVER_727_TRADING_ROWS"  # [S]
+    "calendar_reindex_permitted": false  # [S]
+    "resampling_permitted": false  # [S]
+    "forward_fill_permitted": false  # [S]
+    "backward_fill_permitted": false  # [D]
+    "interpolation_permitted": false  # [D]
+    "winsorisation_permitted": false  # [D]
+    "standardisation_permitted": false  # [D]
+    "outlier_removal_rule": null  # [S]
+    "ledger_state_assignment": "EXACTLY_ONE_PER_RECORD"  # [S]
+    "impute_missing_as_zero": false  # [S]
+    "drop_non_scorable_from_denominator": false  # [S]
+  "P36_REPOSITORY_MANIFEST":
+    "github_repositories_cited": []
+    "dataset_dois_cited": []
+    "supplementary_material_links": []
+    "total_urls_in_manuscript": 3  # [S]
+    "urls_are_all_bibliographic": true  # [S]
+    "redistribution_prohibited": true  # [S]
+    "explicit_non_release_statements":
+      - "Current source ... is not automatically treated as the exactly historically executed commit."  # [S]
+      - "The original proprietary evaluator and full historical request traces are not released."  # [S]
+      - "This does not establish a census of all generated candidates or a historically blind holdout."  # [S]
+      - "Proprietary components and raw provider data are not represented as publicly redistributable artifacts."  # [S]
+      - "No human-annotation study or independent human review is claimed."  # [S]
+    "reproducibility_package_should_contain":
+      - "frozen_1047_id_list_with_hash_and_freeze_timestamp"  # [R]
+      - "80_file_hash_manifest_and_acquisition_instructions"  # [R]
+      - "v1_and_v2_evaluator_versions_with_change_description"  # [R]
+      - "ledger_generation_logic"  # [R]
+      - "nine_designated_spot_check_cells_and_both_implementations"  # [R]
+      - "six_reference_definitions_with_preregistration_timestamp"  # [R]
+      - "disclosure_tables_with_UNDISCLOSED_cells_intact"  # [R]
+    "bibliography":
+      -
+        "id": 1  # [S]
+        "name": "AlphaAgent"  # [S]
+        "arxiv": "2502.16789"  # [S]
+        "year": 2025  # [S]
+        "url": "https://arxiv.org/abs/2502.16789"  # [S]
+        "cited_in": "§2 only"  # [S]
+      -
+        "id": 2  # [S]
+        "name": "QuantaAlpha"  # [S]
+        "arxiv": "2602.07085v3"  # [S]
+        "year": 2026  # [S]
+        "url": "https://arxiv.org/abs/2602.07085v3"  # [S]
+        "cited_in": "§2 only"  # [S]
+      -
+        "id": 3  # [S]
+        "name": "Cognitive Alpha Mining"  # [S]
+        "arxiv": "2511.18850"  # [S]
+        "year": 2025  # [S]
+        "url": "https://arxiv.org/abs/2511.18850"  # [S]
+        "cited_in": "§2 only"  # [S]
+  "P37_DOCUMENT_AND_TABLE_CONSTRUCTION":
+    "document_class": "article"  # [S]
+    "options":
+      - "10pt"  # [S]
+      - "twocolumn"  # [S]
+    "packages":
+      - "inputenc[utf8]"  # [S]
+      - "geometry[margin=0.75in,top=1in,bottom=1in]"  # [S]
+      - "times"  # [S]
+      - "amsmath"  # [S]
+      - "amssymb"  # [S]
+      - "booktabs"  # [S]
+      - "microtype"  # [S]
+      - "url"  # [S]
+      - "hyperref[hidelinks]"  # [S]
+    "table_style": "booktabs"  # [S]
+    "table_float_count": 4  # [S]
+    "table_labels":
+      - "tab:1"  # [S]
+      - "tab:2"  # [S]
+      - "tab:3"  # [S]
+      - "tab:4"  # [S]
+    "blank_cell_convention": "declare unavailable, never render as zero"  # [S]
+    "decimal_precision_in_tables": 3  # [S]
+    "equation_numbering": "single numbered display, Eq. (1)"  # [S]
+  "P38_PLOT_CONSTRUCTION_PARAMETERS":
+    "figure_count_in_paper": 0  # [S]
+    "plot_count_in_paper": 0  # [S]
+    "plotting_library_referenced": null  # [S]
+    "note": "All quantitative content is tabular. A reproducer who adds plots must disclose them as an addition."  # [R]
+  "P39_METHODOLOGICAL_NOTES":
+    "notes":
+      - "Grain precedes metric: a field named Sharpe specifies no population."  # [R]
+      - "Counters specify no denominator."  # [R]
+      - "A positive-only artifact cannot estimate negative frequency."  # [R]
+      - "Information destroyed at logging time is unrecoverable at analysis time."  # [R]
+      - "Freeze before scoring; immutability is the antidote to retention bias."  # [R]
+      - "Conserve every record; admit no imputed neutral value."  # [R]
+      - "Re-run everything after any correction."  # [R]
+      - "Pre-register comparators before computing their outcomes."  # [R]
+      - "Overlapping labels forbid a significance test on the aggregate."  # [R]
+      - "Provenance precedes scale."  # [R]
+    "open_gaps_the_paper_leaves":
+      "rank_ic_never_typeset": "specified in prose only"  # [R]
+      "v1_defect_selection_consequence_unquantified": true  # [S]
+      "is_screen_window_vs_label_window_overlap": "NOT_ADJUDICATED"  # [S]
+      "three_distinct_value_gate_censors_sparse_signals": true  # [R]
+      "distribution_dispersion_unreported": true  # [S]
+      "null_calibration_absent": true  # [S]
+      "clean_oos_acceptance_criteria_unpublished": true  # [S]
+    "self_audit_extensions_beyond_paper":
+      "S1_quantify_v1_error_conditioned_subset": true  # [R]
+      "S2_permutation_null_calibration": true  # [R]
+      "S3_adjudicate_is_label_window_overlap": true  # [R]
+  "P40_ACCEPTANCE_TARGETS_STRUCTURAL_INVARIANTS":
+    "file_matrix":
+      "target": "40 * 2 == 80"  # [D]
+    "calendar_sum":
+      "target": "242 + 242 + 243 == 727"  # [D]
+    "label_window":
+      "target": "485 - 5 == 480"  # [D]
+    "calendar_2023_residual":
+      "target": "727 - 485 == 242"  # [D]
+    "set_partition_checkpoint":
+      "target": "368 + 1648 == 2016"  # [D]
+    "set_partition_catalog":
+      "target": "189 + 1648 == 1837"  # [D]
+    "ledger":
+      "target": "923 + 99 + 25 == 1047"  # [D]
+    "ledger_supported_partition":
+      "target": "1047 - 25 == 923 + 99 == 1022"  # [D]
+    "ledger_pre_tests":
+      "target": "867 + 98 + 25 == 990"  # [D]
+    "correction_split":
+      "target": "56 + 1 == 57"  # [D]
+    "version_closures":
+      "target": "1047 == 990 + 57"  # [D]
+    "sign_partition":
+      "target": "671 + 252 == 923"  # [D]
+    "coverage_partition":
+      "target": "835 + 88 == 923"  # [D]
+    "non_scorable":
+      "target": "99 + 25 == 124"  # [D]
+    "catalog_rule_failures":
+      "target": "1837 - 1037 == 800"  # [D]
+    "implied_pipeline_failures":
+      "target": "289 - 234 == 55"  # [D]
+  "P41_ACCEPTANCE_TARGETS_STUDY_SPECIFIC":
+    "reachable_with_private_artifacts_only": true  # [D]
+    "values":
+      "pipeline_mean_sharpe_over_kept": 2.227  # [D]
+      "swarm_mean_of_round_maxima": 2.433  # [D]
+      "pipeline_kept_max_sharpe": 2.449  # [S]
+      "pipeline_round_summary_max": 3.171  # [S]
+      "swarm_round_max": 4.206  # [S]
+      "leaderboard_keeps":
+        "S_A": 8  # [S]
+        "S_B": 9  # [S]
+      "anomalous_S_A_rounds": 6  # [S]
+      "checkpoint_expressions": 2016  # [S]
+      "checkpoint_negative_oos_rows": 368  # [S]
+      "catalog_expressions": 1837  # [S]
+      "catalog_non_positive_oos_rows": 0  # [S]
+      "catalog_rows_passing_stated_is_rule": 1037  # [S]
+      "catalog_only_expressions": 189  # [S]
+      "checkpoint_only_expressions": 368  # [S]
+      "intersection_expressions": 1648  # [S]
+      "intersection_sign_disagreements": 0  # [S]
+      "preserved_input_rows": 3114  # [S]
+      "frozen_cohort_size": 1047  # [S]
+      "scorable_records": 923  # [S]
+      "insufficient_valid_dates": 99  # [S]
+      "unsupported_records": 25  # [S]
+      "positive_mean_rank_ic": 671  # [S]
+      "negative_mean_rank_ic": 252  # [S]
+      "median_mean_rank_ic": 0.0148  # [S]
+      "factors_with_all_480_dates": 835  # [S]
+      "factors_with_partial_coverage": 88  # [S]
+      "v1_error_count": 57  # [S]
+      "v2_newly_scorable": 56  # [S]
+      "v2_residual_insufficient": 1  # [S]
+      "v1_unchanged_records": 990  # [S]
+      "masked_cells": 2  # [S]
+      "reference_mean_rank_ic":
+        "nominal_close_level": -0.0218  # [S]
+        "share_volume": 0.0234  # [S]
+        "nominal_traded_amount": 0.0021  # [S]
+        "one_day_nominal_reversal": -0.0007  # [S]
+        "five_day_nominal_reversal": -0.0155  # [S]
+        "twenty_day_nominal_change": 0.0229  # [S]
+  "P42_ARITHMETIC_CLOSURES":
+    "file_matrix": "40 * 2 == 80"  # [D]
+    "calendar": "242 + 242 + 243 == 727"  # [D]
+    "calendar_2023_residual": "727 - 485 == 242"  # [D]
+    "label_availability": "485 - 5 == 480"  # [D]
+    "set_partition_checkpoint": "368 + 1648 == 2016"  # [D]
+    "set_partition_catalog": "189 + 1648 == 1837"  # [D]
+    "ledger": "923 + 99 + 25 == 1047"  # [D]
+    "ledger_supported": "1047 - 25 == 1022 == 923 + 99"  # [D]
+    "sign_partition": "671 + 252 == 923"  # [D]
+    "coverage_partition": "835 + 88 == 923"  # [D]
+    "version_closures":
+      - "1047 == 990 + 57"  # [D]
+      - "990 == 867 + 98 + 25"  # [D]
+      - "867 + 56 == 923"  # [D]
+      - "98 + 1 == 99"  # [D]
+    "implied_pipeline_failures": "289 - 234 == 55"  # [D]
+    "non_scorable": "99 + 25 == 124"  # [D]
+    "catalog_rule_failures": "1837 - 1037 == 800"  # [D]
+    "sum_closures_rounds_to_totals": !!set  # [D]
+      ? "sum(round_generated) == 887 or 876"
+      ? "sum(round_keeps) == 11"
+      ? "sum(round_keeps) == 20"
+      ? "sum(round_keeps) == 67"
+      ? "sum(round_returned) == 816 or 461"
+      ? "sum(round_successful) == 234"
+      ? "sum(round_tested) == 289"
+  "P43_GOVERNANCE_PARAMETERS":
+    "public_data_only": true  # [S]
+    "live_trading_claim_permitted": false  # [S]
+    "financial_advice_claim_permitted": false  # [S]
+    "order_sending_permitted": false  # [S]
+    "preserve_failed_records": true  # [S]
+    "preserve_non_scorable_records": true  # [S]
+    "redistribution_grant": false  # [S]
+    "redistributable_artifacts":
+      - "hashes"  # [R]
+      - "definitions"  # [R]
+      - "versioned_evaluator_logic"  # [R]
+      - "acceptance_tests"  # [R]
+      - "frozen_id_list_with_hash_and_timestamp"  # [R]
+      - "disclosure_tables"  # [R]
+      - "spot_check_cell_definitions"  # [R]
+    "non_redistributable_artifacts":
+      - "raw_vendor_data"  # [S]
+      - "proprietary_evaluator_internals"  # [S]
+    "model_labels_as_verified_identity": false  # [S]
+    "ai_assistance_disclosed": true  # [S]
+    "human_annotation_study_claimed": false  # [S]
+    "independent_human_review_claimed": false  # [S]
+    "numericals_computed_not_generated": true  # [S]
+    "author_accountability_asserted": true  # [S]
+  "P44_RAW_LAYER_INVARIANTS":
+    "file_count_equals_80": true  # [D]
+    "rows_per_bar_file_equals_727": true  # [D]
+    "calendar_rows_equals_727": true  # [S]
+    "calendar_year_counts_242_242_243": true  # [D]
+    "label_window_rows_equals_485": true  # [D]
+    "terminal_unlabelled_rows_equals_5": true  # [S]
+    "label_available_rows_equals_480": true  # [D]
+    "masked_cell_rows_equals_2": true  # [S]
+    "forward_fill_rows_equals_0": true  # [S]
+    "stock_prefix_reductions_equals_0": true  # [S]
+    "oos_sharpe_non_null_rows_before_freeze_equals_0": true  # [S]
+    "imputed_zero_alpha_records_equals_0": true  # [S]
+    "unassigned_ledger_records_equals_0": true  # [S]
+    "catalog_non_positive_oos_rows_equals_0": true  # [S]
+    "sign_disagreements_in_intersection_equals_0": true  # [S]
+    "duplicate_rows_per_stock_date_equals_0": true  # [R]
+    "retrieval_coherence_window_not_exceeded": true  # [R]
+  "P45_DISCLOSURE_GAPS":
+    "fallback_rate_reported": false  # [S]
+    "universe_constituents_disclosed": false  # [S]
+    "is_screen_window_disclosed": false  # [S]
+    "prompts_disclosed": false  # [S]
+    "inference_settings_disclosed": false  # [S]
+    "api_credentials_disclosed": false  # [S]
+    "grammar_disclosed": false  # [S]
+    "executed_commit_bound_to_report": false  # [S]
+    "initial_pool_hash_available": false  # [S]
+    "specialist_to_category_map_disclosed": false  # [S]
+    "allocation_update_rule_disclosed": false  # [S]
+    "prompt_revision_periodicity_disclosed": false  # [S]
+    "catalog_source_pool_disclosed": false  # [D]
+    "evaluator_metric_vectors_sized": false  # [D]
+    "executed_selection_policy_disclosed": false  # [D]
+    "orchestrator_implementation_disclosed": false  # [D]
+    "preliminary_screen_disclosed": false  # [D]
+    "reviewer_model_label_reported": false  # [D]
+    "sd_definition_disclosed": false  # [D]
+    "search_budget_disclosed": false  # [D]
+    "seeds_disclosed": false  # [D]
+    "spot_check_tolerance_disclosed": false  # [D]
+  "P45_GAP_RECONCILIATION":
+    "leaf_to_gap":
+      "P00_META.provenance_tags[4]": "NOT_A_GAP"  # [R]
+      "P02_RANK_IC_PARAMETERS.sd_definition": "sd_definition_disclosed"  # [R]
+      "P06_COHORT_ADMISSION_PARAMETERS.workflow_specific_gates_enabled": "executed_selection_policy_disclosed"  # [R]
+      "P10_RETENTION_AUDIT_PARAMETERS.preliminary_screen_predicate": "preliminary_screen_disclosed"  # [R]
+      "P30_SCHEMA_RUNNER_CONTROL.fields.preliminary_screen.exact_predicate.value": "preliminary_screen_disclosed"  # [R]
+      "P10_RETENTION_AUDIT_PARAMETERS.catalog_source_pool_size": "catalog_source_pool_disclosed"  # [R]
+      "P11_ACQUISITION_PARAMETERS.provider_url": "universe_constituents_disclosed"  # [R]
+      "P13_DSL_EVALUATOR_INTERFACE.grammar": "grammar_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.specialist_to_category_map": "specialist_to_category_map_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.orchestrator_implementation_class": "orchestrator_implementation_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.adaptive_allocation_weights.dimensionality": "allocation_update_rule_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.adaptive_allocation_weights.initialisation": "allocation_update_rule_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.adaptive_allocation_weights.update_rule": "allocation_update_rule_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.allocation_weight_update_rule": "allocation_update_rule_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.prompt_revision.applied": "prompt_revision_periodicity_disclosed"  # [R]
+      "P15_SWARM_ARCHITECTURE_PARAMETERS.prompt_revision.periodicity": "prompt_revision_periodicity_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.prompt_revision_periodicity": "prompt_revision_periodicity_disclosed"  # [R]
+      "P16_COMPARISON_HARNESS_PARAMETERS.seeds_reported": "seeds_disclosed"  # [R]
+      "P16_COMPARISON_HARNESS_PARAMETERS.state_inheritance_mechanism": "initial_pool_hash_available"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.evaluations_per_round": "search_budget_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.generations_cap": "search_budget_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.evaluations_cap": "search_budget_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.token_cap": "search_budget_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.wall_clock_cap": "search_budget_disclosed"  # [R]
+      "P17_SEARCH_CONTROL_AND_BUDGET_PARAMETERS.early_stopping": "search_budget_disclosed"  # [R]
+      "P18_VERIFICATION_PARAMETERS.tolerance_nine_cell": "spot_check_tolerance_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_names_reported_as_labels_only.pipeline_reviewer.label": "reviewer_model_label_reported"  # [R]
+      "P21_LLM_CONFIGURATION.llm_names_reported_as_labels_only.pipeline_reviewer.label_source": "reviewer_model_label_reported"  # [R]
+      "P21_LLM_CONFIGURATION.llm_api_credentials.api_base_url": "api_credentials_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_api_credentials.auth_scheme": "api_credentials_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.temperature": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.top_p": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.top_k": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.max_output_tokens": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.sampling_seed": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.stop_sequences": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.retry_policy": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.backoff_policy": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.request_timeout_seconds": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.context_assembly_rule": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.llm_inference_settings.response_parsing_rule": "inference_settings_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.prompt_templates.system_prompt": "prompts_disclosed"  # [R]
+      "P21_LLM_CONFIGURATION.prompt_templates.user_prompt_template": "prompts_disclosed"  # [R]
+      "P32_SCHEMA_EVALUATOR_METRIC_VECTORS.estimated_row_count": "evaluator_metric_vectors_sized"  # [R]
+    "self_evidenced_gaps":
+      - "fallback_rate_reported"  # [R]
+      - "is_screen_window_disclosed"  # [R]
+      - "executed_commit_bound_to_report"  # [R]
+  "verification_targets":
+    "file_count":
+      "target": 80  # [D]
+      "tolerance": "EXACT"  # [D]
+    "calendar_rows":
+      "target": 727  # [S]
+      "tolerance": "EXACT"  # [S]
+    "label_available_dates":
+      "target": 480  # [D]
+      "tolerance": "EXACT"  # [D]
+    "terminal_unlabelled_rows":
+      "target": 5  # [S]
+      "tolerance": "EXACT"  # [S]
+    "masked_cells":
+      "target": 2  # [S]
+      "tolerance": "EXACT"  # [S]
+    "ledger_closure":
+      "target": "923+99+25 == 1047"  # [D]
+      "tolerance": "EXACT"  # [D]
+    "sign_closure":
+      "target": "671+252 == 923"  # [D]
+      "tolerance": "EXACT"  # [D]
+    "coverage_closure":
+      "target": "835+88 == 923"  # [D]
+      "tolerance": "EXACT"  # [D]
+    "version_closure":
+      "target": "1047 == 990+57"  # [D]
+      "tolerance": "EXACT"  # [D]
+    "correction_closure":
+      "target": "56+1 == 57"  # [D]
+      "tolerance": "EXACT"  # [D]
+    "pipeline_mean_sharpe_over_kept":
+      "target": 2.227  # [D]
+      "tolerance": "3_DECIMALS"  # [D]
+      "reachable": "PRIVATE_ARTIFACTS_ONLY"  # [D]
+    "swarm_mean_of_round_maxima":
+      "target": 2.433  # [D]
+      "tolerance": "3_DECIMALS"  # [D]
+      "reachable": "PRIVATE_ARTIFACTS_ONLY"  # [D]
+    "median_mean_rank_ic":
+      "target": 0.0148  # [S]
+      "tolerance": "4_DECIMALS"  # [S]
+      "reachable": "PRIVATE_ARTIFACTS_ONLY"  # [S]
+    "catalog_rows_passing_stated_rule":
+      "target": 1037  # [S]
+      "tolerance": "EXACT"  # [S]
+      "reachable": "PRIVATE_ARTIFACTS_ONLY"  # [S]
+    "cohort_size":
+      "target": 1047  # [S]
+      "tolerance": "EXACT"  # [S]
+      "reachable": "PRIVATE_ARTIFACTS_ONLY"  # [S]
