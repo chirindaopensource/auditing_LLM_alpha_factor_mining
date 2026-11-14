@@ -1,0 +1,267 @@
+## Key callables, Tasks 1 to 16
+
+This document discusses the 16 task orchestrators of the research pipeline in the `auditing_LLM_alpha_factor_mining_draft.ipynb` notebook, one per task, in notebook order. Fourteen are named `run_task_N`. Task 14's orchestrator is `run_study`, which composes the core pipeline, and Task 15's is `run_sensitivity_task_15`, which runs the robustness suite.
+
+Each orchestrator validates its boundary arguments, calls its task's step callables in their pinned order and writes the task's artifacts. Step callables and private helpers are described inside their parent task, not counted separately.
+
+Python implementation author: **CS Chirinda**.
+
+**Sources.** Each entry is taken from the orchestrator's signature and documented contract, from the docstrings and code of the step callables it calls, and from the notebook's `STUDY_CONFIG` (sections `P00` to `P45`). The methodological standard is the paper, Yufeng He (2026), *Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort Reanalysis* (the `latex_context.txt`). Quotations come from that source.
+
+**How the 16 tasks fit together.** The paper audits a preserved project at three levels: historical run counters (Section 4), outcome retention (Section 5) and a full-cohort public reanalysis (Section 6). The pipeline implements the reanalysis end to end and adds the governance that keeps every claim at its evidentiary tier:
+
+- Tasks 1–3: parameter and input validation, cleansing, and hash-manifest custody of the 80 acquired files.
+- Tasks 4–6: identity of the unadjusted and adjusted views, the nominal/adjusted role split, the 727-row trading calendar with two masked cells, and the Eq. (1) labels.
+- Tasks 7–10: the DSL evaluator, the cohort freeze, daily rank-IC scoring, and factor aggregation into the three-state ledger.
+- Tasks 11–13: the six pre-registered references, the nine-cell dual-implementation check, and the v1 to v2 correction with full re-evaluation.
+- Task 14: the orchestrated core pipeline. Task 15: the sensitivity variants. Task 16: claim governance, tier tagging and the redistributable deposit.
+
+**Format of each entry.** Inputs, Process, Outputs, Transformation (how input data become output data), Research role (the element of the paper the callable implements, with a quotation), Equations, and Implementation distinction (where the code makes a declared choice the paper leaves open).
+
+**Notation.** Stock $i$ in the 40-stock universe; trading-calendar row $t$; expression (factor) $e$ in the frozen cohort $\mathcal{C}$ with $\lvert\mathcal{C}\rvert=1047$; signal $s_{i,t}(e)$; label $y_{i,t}$; eligible cross-section $\mathcal{E}_t(e)$; cross-sectional average-tie rank $R_t(\cdot)$; valid-date set $T_e$. The paper's one numbered equation, and the statistics built on it, are:
+
+$$
+(1)\ \ y_{i,t}=\frac{P_{i,t+5}^{\mathrm{adj}}}{P_{i,t}^{\mathrm{adj}}}-1,\qquad \rho_t(e)=\mathrm{corr}\left(R_t\left(s_{\cdot,t}(e)\right),\ R_t\left(y_{\cdot,t}\right)\right)\ \text{over}\ \mathcal{E}_t(e),\qquad \bar\rho(e)=\frac{1}{\lvert T_e\rvert}\sum_{t\in T_e}\rho_t(e).
+$$
+
+**Data boundary.** Every published figure below (the counters of Tables 1 and 2, the 923 / 99 / 25 ledger, the 671 / 252 sign split, the median 0.0148 and the Table 4 means) is a comparison value held in `STUDY_CONFIG`, never a value an orchestrator returns as computed. The study corpus is not in the repository. The notebook's Study Execution cell looks for it under `AUDIT_STUDY_INPUTS` and, when it is absent, stops with `STUDY_STATUS = DATA_ABSENT` after every callable is defined. Task 13 runs on a declared, deterministic reconstruction fixture and stamps every artifact as such.
+
+### Task 1 — `run_task_1`
+
+- **Inputs**: `FILES` (the acquisition manifest indexed on `file_id`), `UNADJUSTED_BARS`, `ADJUSTED_BARS` (both indexed on `(stock_code, trade_date)`), `STUDY_CONFIG` (sections `P00`–`P45` plus `_provenance_tags`), `TRADING_CALENDAR`.
+- **Process**: type-checks the five arguments, then runs Step 1 (`validate_files_task_1`), Step 2 (`validate_panels_task_1`, on the manifest that Step 1 augments) and Step 3 (`validate_config_task_1`) in order.
+- **Outputs**: the first non-`None` halt reason, returned verbatim, or `None` when every gate passes.
+- **Transformation**: each step copies its inputs, so the caller's frames are untouched. Step 1 adds four sanctioned columns to the manifest; Step 2 validates the two bar panels against the manifest and the trading calendar; Step 3 validates the configuration and its provenance tags. Reports are discarded; only the verdict leaves.
+- **Research role**: enforces the stated snapshot, "the same ordered 40-stock convenience universe over 727 trading dates in 2023--2025", acquired as "unadjusted and provider-adjusted daily views through BaoStock 0.9.3".
+- **Equations**: the panel and manifest cardinalities the later tasks rely on:
+
+$$
+\lvert\mathrm{FILES}\rvert=80=40\times2,\qquad \lvert\mathrm{BARS}\rvert=40\times727=29080\ \text{rows per view}.
+$$
+
+- **Implementation distinction**: a failed gate returns its reason instead of raising, so callers can stamp the halt. Wrong argument types raise `TypeError`, and missing columns raise `ValueError` from inside the steps.
+
+### Task 2 — `run_task_2`
+
+- **Inputs**: `FILES`, `UNADJUSTED_BARS`, `ADJUSTED_BARS`, `STUDY_CONFIG` (carried through unmodified).
+- **Process**: deep-copies the three frames, builds the anti-imputation context and cast ledger, casts the bar panels and the manifest, asserts the BaoStock stock-code pattern, identity strings and enum domains, runs the scoped prohibited-sentinel scan, and checks that every input index survives.
+- **Outputs**: the cleansed `FILES`, `UNADJUSTED_BARS` and `ADJUSTED_BARS`; `cast_ledger`; `stock_codes` in first-seen order; the counters `forward_fill_operations`, `interpolation_operations` and `stock_prefix_reductions`; `study_config` by identity.
+- **Transformation**: integer terminals become nullable `Int64` under an exact Decimal check, `trade_date` becomes naive `datetime64[ns]`, `retrieved` becomes `datetime64[ns, Asia/Shanghai]`, booleans become `boolean[pyarrow]` and strings `string[pyarrow]`. Values and row order are preserved.
+- **Research role**: implements the masking-not-filling rule, "We neither forward-fill missing observations nor substitute a smaller acquired stock prefix".
+- **Equations**: the anti-imputation invariant the three counters witness:
+
+$$
+n_{\mathrm{ffill}}=n_{\mathrm{interp}}=n_{\mathrm{prefix}}=0,\qquad \mathrm{index}_{\mathrm{out}}=\mathrm{index}_{\mathrm{in}}.
+$$
+
+- **Implementation distinction**: no sorting, deduplication or re-indexing is performed. A changed index raises `RuntimeError`; a failed cast, pattern, enum or sentinel check raises `ValueError` naming the offending cells. The adjusted view is cleansed here but reserved for labels.
+
+### Task 3 — `run_task_3`
+
+- **Inputs**: `FILES`; keyword `unadjusted`, `adjusted`, `calendar`, `manifest_path`, `coherence_check_id` (default `"T3.start.coherence"`, and `"T18.close.coherence"` at close-of-study re-verification).
+- **Process**: Step 1 (`rehash_files_task_3`) recomputes each file's byte hash and content length and writes `hash_manifest.json` only if every file rehashes cleanly. Step 2 (`verify_conjuncts_task_3`) materialises six verification conjuncts and the derived `response_truncated` flag. Step 3 (`aggregate_verified_task_3`) aggregates them and re-asserts the retrieval coherence window.
+- **Outputs**: `FILES_with_verdicts` (the manifest with the six conjuncts, `response_truncated` and `verified`) and `verdict_packet` (the same columns, with the disclosure attrs).
+- **Transformation**: file bytes become SHA-256 digests; per-file evidence becomes one three-valued verdict.
+- **Research role**: implements "verify all 80 files, their byte hashes", the hash-manifest discipline that the paper's snapshot rests on.
+- **Equations**: the False-dominant Kleene aggregate over the six conjuncts $c_{1}$ to $c_{6}$:
+
+$$
+\mathrm{verified}=\begin{cases}\mathrm{False} & \text{if some } c_j=\mathrm{False},\cr \mathrm{NA} & \text{else if some } c_j=\mathrm{NA},\cr \mathrm{True} & \text{otherwise.}\end{cases}
+$$
+
+- **Implementation distinction**: a Step 1 halt stops Step 2 from running. A Step 3 halt (any non-NA `False` conjunct) leaves the Step 1 manifest on disk as custody evidence. Both raise `CustodyHaltError`.
+
+### Task 4 — `run_task_4`
+
+- **Inputs**: `FILES`, `UNADJUSTED_BARS`, `ADJUSTED_BARS`, `STUDY_CONFIG`; keyword `expected_join_cardinality` (29,080 before masking, 29,078 after), `features_root`, `labels_root`.
+- **Process**: runs the view-alignment diagnostic against the cardinality pin, the shared-field agreement check (which may clear `FILES` agreement flags in place), the adjustment-factor constancy test and the irreversible two-panel split, persisting both panels.
+- **Outputs**: `alignment`, `shared_fields`, `constancy`, `features_panel` and `labels_panel` (the two facades), `features_path`, `labels_path`, `study_config` (an augmented deep copy) and `fraud_log` (attempted `_adj` accesses; empty on a clean feature path).
+- **Transformation**: two aligned views become a features panel holding only nominal fields and a label panel holding the adjusted close. The feature facade refuses any `_adj` column and logs the attempt.
+- **Research role**: implements "date/stock/adjustment identities, and shared quantity and trading-status fields", and the embargo "Features use nominal prices, shares, and nominal traded amount; the adjusted-price view is reserved for labels".
+- **Equations**: the alignment identity and the role separation:
+
+$$
+\mathcal{K}^{\mathrm{unadj}}=\mathcal{K}^{\mathrm{adj}},\qquad \lvert\mathcal{K}\rvert=29080,\qquad \mathrm{features}\subseteq\lbrace\mathrm{close},\mathrm{volume},\mathrm{amount},\mathrm{tradable}\rbrace,\qquad P^{\mathrm{adj}}\in\mathrm{labels}\ \text{only}.
+$$
+
+- **Implementation distinction**: every halt propagates as its own exception (`ViewAlignmentHaltError`, `SharedFieldHaltError`, `AdjustmentFactorHaltError`, `PanelSplitHaltError`), so no partial bundle is returned. The caller's configuration is deep-copied, never mutated.
+
+### Task 5 — `run_task_5`
+
+- **Inputs** (keyword-only): `unadjusted_bars`, `features_panel`, `label_panel` (Task 4, 29,080 rows each), `mask_register` (two rows), `study_config`, `context`, `output_directory`.
+- **Process**: Step 1 builds the dense 727-row trading calendar and writes `trading_calendar.csv`. Step 2 verifies the mask register, applies the two masked stock-day cells to deep copies of both panels and writes `mask_application_witness.csv`. Step 3 runs the post-mask invariant battery and derives the usable views.
+- **Outputs**: `calendar`, `calendar_hash` (SHA-256 of the CSV bytes as persisted), `masked_features_panel` and `masked_label_panel` (29,080 rows, NA kept), `usable_features_panel` and `usable_label_panel` (29,078 rows), `mask_witness`, `post_mask_battery`, `disclosures`, `halt_reason`, `calendar_audit`, `mask_register_validated`.
+- **Transformation**: masked cells become NA rows in the masked views and are excluded, in order, from the usable views. No value is filled.
+- **Research role**: implements "Two non-trading stock-day cells are masked" on the stated 727-date calendar.
+- **Equations**: the dense row index and the masked cardinality:
+
+$$
+t\in\lbrace1,\dots,727\rbrace,\qquad 29080-2=29078.
+$$
+
+- **Implementation distinction**: a failing stage records a stage-namespaced `halt_reason` and leaves later products `None`; `post_mask_battery.json` is written on every outcome.
+
+### Task 6 — `run_task_6`
+
+- **Inputs**: `label_panel` (Task 5, masked cells kept as NA rows), `calendar` (dense `row_index` and `trade_date`), `expected_label_available_dates` (480 on the study calendar; never defaulted).
+- **Process**: Step 1 builds label pairs at the dense row index, joined on `(stock_code, row_index)`. Step 2 applies endpoint admissibility and sets $y$ to NaN wherever `defined` is not strictly True. Step 3 runs the NaN-hygiene battery and attaches `__label_status`.
+- **Outputs**: `LABELS` (`y`, `defined`, `row_index`, `__label_status`, and the OOS sentinels), `label_available_dates` (sorted), `n_available_labels` per stock (disclosed, never asserted), `withdrawals`.
+- **Transformation**: adjusted closes become five-row forward simple returns. Inadmissible pairs and the terminal rows become NaN; nothing is dropped.
+- **Research role**: implements Eq. (1) exactly: "the label is the provider-adjusted close change over five trading-calendar rows", with "Both endpoint prices must be finite and positive and both endpoints tradable", and "the last five captured dates have no label".
+- **Equations**: Eq. (1) with its admissibility predicate:
+
+$$
+y_{i,t}=\frac{P_{i,t+5}^{\mathrm{adj}}}{P_{i,t}^{\mathrm{adj}}}-1\ \ \text{iff}\ \ \bigwedge_{u\in\lbrace t,\thinspace t+5\rbrace}\left[P_{i,u}^{\mathrm{adj}}\in(0,\infty)\wedge\mathrm{tradable}_{i,u}\right],\ \text{else NaN};\qquad t+5\le727.
+$$
+
+- **Implementation distinction**: the code builds the predicate from six terms (finite, positive, tradable at each endpoint), because finiteness of a `float64` value already implies it is not null. Each stage's failure is re-raised as a `RuntimeError` naming the stage.
+
+### Task 7 — `run_task_7`
+
+- **Inputs**: `features_panel` (consumed only through the boundary validator, so the Task 4 embargo facade is never unwrapped), `expressions` (preserved rows with `expression_text`; default `None`), keyword `task1_preflight`.
+- **Process**: builds the immutable operator registry and the terminal registry (`close`, `volume`, `amount`, `tradable`, taken cell for cell from the panel), stamps the registry's SHA-256, then parses every expression with `parse_records_task_7`.
+- **Outputs**: exactly five keys: `registry`, `terminal_registry`, `registry_sha256` (also stamped on every evaluator-table row), `parse_table` and `task1_preflight` (echoed by identity).
+- **Transformation**: expression text becomes a parsed evaluator table with `parse_status` and `operators_used`, which Task 10 reads to detect unsupported records.
+- **Research role**: implements the public evaluator of "a functional price/volume DSL" that replaces the unreleased proprietary one; the reanalysis "uses public rather than native semantics".
+- **Equations**: each expression is a functional composition of public operators over nominal terminals:
+
+$$
+s_{i,t}(e)=e\left(\mathrm{close},\mathrm{volume},\mathrm{amount}\right)_{i,t},\qquad \mathrm{ops}(e)\subseteq\mathcal{O}^{\mathrm{public}}\ \Rightarrow\ \text{supported}.
+$$
+
+- **Implementation distinction**: with `expressions=None` an empty table on the same schema is returned. No files are written; the registry hash binds every later score to the exact operator set.
+
+### Task 8 — `run_task_8`
+
+- **Inputs**: `preserved_input_rows` (with `row_id`, `is_sharpe`, `is_fitness`, `is_turnover`, `expression_id_canonical`), `oos_read_start_ts` (timezone-aware), `output_dir`, `upstream_halt_reason`.
+- **Process**: composes `screen_is_only_task_8`, `deduplicate_canonical_task_8` and `freeze_cohort_task_8` in that order, under the pins "deduplication before freeze, using IS data only" and "freeze before any scoring".
+- **Outputs**: one flat disclosure dictionary: the counts (`source_rows`, `n_after_I_screen`, `n_before_dedup`, `n_after_dedup`, `dropped_count`, `cohort_size`), the deduplication ledger, `cohort_hash`, `freeze_timestamp` (Asia/Shanghai), `freeze_id`, `oos_used_in_admission` (always `False`), and the two paper comparison counts.
+- **Transformation**: preserved rows become an IS-screened, deduplicated, ordered ID list, hashed and written once as `cohort_freeze.json` with a `.freeze_lock` sentinel.
+- **Research role**: implements "a frozen list of 1,047 unique expressions selected from 3,114 preserved input rows using the stated IS screen", where "no expression is chosen by its new score".
+- **Equations**: the IS admission rule and the freeze ordering:
+
+$$
+\mathrm{Sharpe}^{\mathrm{IS}}\ge2\ \wedge\ \mathrm{Fitness}^{\mathrm{IS}}\ge0\ \wedge\ \mathrm{Turnover}^{\mathrm{IS}}\le500,\qquad \tau_{\mathrm{freeze}}\lt\tau_{\mathrm{OOS\ read}}.
+$$
+
+- **Implementation distinction**: the freeze reads whitelisted IS columns only. The paper's 3,114 and 1,047 are looked up from the configuration and never forced to match the computed counts.
+
+### Task 9 — `run_task_9`
+
+- **Inputs**: `factor_panel` and the `labels` and `tradable` Series (all on `(stock_code, trade_date)`), `mask_register`, `expression_ids`, `trade_dates`, `evaluator_version`, `output_dir`, `parse_failed_ids`.
+- **Process**: validates and creates `output_dir`, delegates construction to `build_daily_scores_task_9` (the date gate `date_gate_task_9` and the scorer `mid_rank_pearson_task_9`), writes `DAILY_SCORES.csv`, reads the bytes back and writes `DAILY_SCORES.sha256`.
+- **Outputs**: the `DAILY_SCORES` register on `(expression_id, trade_date)` with `rho`, `n_eligible`, `n_distinct_signal`, `n_distinct_label`, `admissible`, `reject_reason` and `evaluator_version`.
+- **Transformation**: each (expression, date) cross-section becomes one rank correlation, or a gated rejection with reason `"gate"`.
+- **Research role**: implements "Daily rank-IC is the Pearson correlation of average-tie cross-sectional ranks. We require at least five eligible stocks, three distinct signal values, and two distinct labels."
+- **Equations**: the date gate and the mid-rank Pearson statistic:
+
+$$
+\lvert\mathcal{E}_t\rvert\ge5,\quad \lvert\lbrace s_{i,t}\rbrace\rvert\ge3,\quad \lvert\lbrace y_{i,t}\rbrace\rvert\ge2,\qquad \rho_t=\frac{\sum_{i\in\mathcal{E}_t}(r_{i}-\bar r)(q_{i}-\bar q)}{\sqrt{\sum_{i}(r_{i}-\bar r)^{2}\sum_{i}(q_{i}-\bar q)^{2}}}.
+$$
+
+- **Implementation distinction**: here $r$ and $q$ are the average-tie ranks of signal and label. The SHA-256 attests the on-disk bytes, not the in-memory frame.
+
+### Task 10 — `run_task_10`
+
+- **Inputs**: `daily_scores`, `frozen_expression_ids` (ordered, unique; their count sets $n_{\mathrm{cohort}}$), `support` (`parse_status`, `operators_used`), `output_dir`, `public_operator_registry`, `upstream_halt_reason`.
+- **Process**: `aggregate_factors_task_10` aggregates the register per factor; `assign_ledger_task_10` assigns the three-state ledger under the primary precedence `("unsupported", "insufficient", "scorable")` and the reverse precedence; `closure_battery_task_10` checks every partition. Writes `FACTOR_AGGREGATES.csv`.
+- **Outputs**: `n_cohort`, `n_scorable`, `n_insufficient`, `n_unsupported`, `n_positive`, `n_negative`, `n_exact_zero`, `n_nan_mean`, `near_zero_count`, `n_full`, `n_partial`, `median_mean_rank_ic`, `aggregates_path`, `diagnostics`, `claim_records`.
+- **Transformation**: daily correlations become one mean rank-IC, an unannualised mean/SD ratio and one ledger state per frozen expression; cohort members absent from the register stay in with `n_valid_dates = 0`.
+- **Research role**: implements "A factor is scorable only with at least 20 valid dates" and Table 3: "Non-scorable records remain in the denominator; no missing result is assigned zero alpha".
+- **Equations**: scorability and the closures that must hold to the unit:
+
+$$
+\mathrm{scorable}(e)\iff\lvert T_e\rvert\ge20,\qquad n_{\mathrm{sc}}+n_{\mathrm{ins}}+n_{\mathrm{uns}}=n_{\mathrm{cohort}},\qquad n_{+}+n_{-}+n_{0}+n_{\mathrm{NaN}}=n_{\mathrm{sc}},\qquad n_{\mathrm{full}}+n_{\mathrm{partial}}=n_{\mathrm{sc}}.
+$$
+
+- **Implementation distinction**: signs use an exact zero test on the unrounded mean. The near-zero count (threshold $10^{-12}$) is a diagnostic only. No significance statistic is computed.
+
+### Task 11 — `run_task_11`
+
+- **Inputs**: post-mask `features_panel`, `label_panel`, `trading_calendar`, `mask_register`; `factor_aggregates` (Task 10); `output_dir`; the comparison values `paper_reference_targets`, `paper_exposure_envelope`, `paper_valid_dates`; `cohort_freeze_timestamp`.
+- **Process**: first writes the reference preregistration record (`preregistration_record_task_11`), before any scoring; then scores the six references with `score_references_task_11` through the cohort's own Task 9 builder; then builds the report with `build_reference_report_task_11`.
+- **Outputs**: `reference_means`, `reference_table`, `exposure_envelope`, `cohort_median_placement`, `pinned_statements`, `sign_convention_bridge`, `preregistration_record`, `reference_preregistration_timestamp`; the CSVs `DAILY_SCORES_REFS.csv`, `REFERENCE_MEANS.csv` and `REFERENCE_TABLE.csv`.
+- **Transformation**: six fixed signals become six mean signed rank-ICs on the cohort's snapshot, gate and scorer, placed beside the cohort median as context.
+- **Research role**: implements Section 6.1: "we specify six fixed reference signals before computing their outcomes. All are reported in Table 4; signs and horizons are not selected based on these scores."
+- **Equations**: the six pinned references (lag $k$ is a per-stock trading-calendar row shift):
+
+$$
+r_{1}=\mathrm{close},\quad r_{2}=\mathrm{volume},\quad r_{3}=\mathrm{amount},\quad r_{4}=-\left(\frac{\mathrm{close}_t}{\mathrm{close}_{t-1}}-1\right),\quad r_{5}=-\left(\frac{\mathrm{close}_t}{\mathrm{close}_{t-5}}-1\right),\quad r_{6}=\frac{\mathrm{close}_t}{\mathrm{close}_{t-20}}-1.
+$$
+
+- **Implementation distinction**: a cohort freeze timestamp equal to the reference preregistration timestamp raises `ValueError`. The loss of the first rows of $r_{4}$, $r_{5}$ and $r_{6}$ is reported, not corrected.
+
+### Task 12 — `run_task_12`
+
+- **Inputs**: `factor_panel`, `labels`, `tradable` (threaded so the alternative sees the primary's eligible cross-section), `mask_register`, `daily_scores`, `output_dir`.
+- **Process**: `select_nine_cells_task_12` picks the nine cells by pinned rules and freezes `NINE_CELLS.csv` with a SHA-256 sidecar before any recomputation; `build_dual_check_results_task_12` recomputes each cell with the separately written tie-ranking and correlation routine; the report `DUAL_CHECK_REPORT.md` is rendered.
+- **Outputs**: `nine_cells`, `dual_check_results` (`primary_rho`, `alternative_rho`, `delta`, `pass_at_tolerance`), `freeze_sha256`, `report_path`, `pass_requirement`, `r9_status`.
+- **Transformation**: nine (expression, date) cells become nine paired correlations and a pass verdict for the measurement instrument, not for the results.
+- **Research role**: implements "nine fixed record/date rank-IC cells with a separate tie-ranking/Pearson calculation".
+- **Equations**: the three-arm tolerance predicate, with $\delta=\lvert\rho^{\mathrm{prim}}-\rho^{\mathrm{alt}}\rvert$:
+
+$$
+\mathrm{pass}\iff\delta\le10^{-10}\ \vee\ \frac{\delta}{\max\left(10^{-10},\lvert\rho^{\mathrm{prim}}\rvert\right)}\le10^{-12}\ \vee\ \rho^{\mathrm{prim}}=\rho^{\mathrm{alt}}.
+$$
+
+- **Implementation distinction**: a NaN on either side fails all three arms and halts, because the two implementations then disagree on the statistic's domain.
+
+### Task 13 — `run_task_13`
+
+- **Inputs**: `scratch_root` (a non-blank path), `task_1_output`, `task_7_output`.
+- **Process**: binds the dependency outputs, builds the deterministic reconstruction fixture, archives the v1 package (`archive_v1_package_task_13`), checks that the registry diff is conditional-only and exercises `apply_v2_conditional_task_13` once on a smoke panel, verifies the unchanged records (`verify_unchanged_records_task_13`), commits the v2 archive, then builds the full re-evaluation ledger and its four closures.
+- **Outputs**: `halted`, `halt_reason`, `dependency_handoff`, `stages`, `V1_ARCHIVE_COMMIT`, `V1_REGISTER_SUMMARY`, `REGISTRY_DIFF`, `V2_CONDITIONAL_SHAPE`, `INVARIANT_RESULT`, `V2_ARCHIVE_COMMIT`, `RE_EVALUATION_LEDGER_SUMMARY`, `closures`, `selection_consequence` (`None`), `artifacts_provenance` (`"RECONSTRUCTION_FIXTURE"`), `data_gap` (`"DATA_ABSENT"`), `reconstruction_notice`.
+- **Transformation**: the v1 register with its 57 errors becomes an archived v1 package and a fully re-evaluated v2 ledger.
+- **Research role**: implements "We preserve this v1 run and add a versioned scalar-broadcasting correction", "All 1,047 records are then re-evaluated", and "The other 990 diagnostic records remain unchanged; 56 corrected records become scorable and one remains insufficiently observed".
+- **Equations**: the closures the v2 ledger must satisfy:
+
+$$
+990+57=1047,\qquad 57=56+1,\qquad (867+56)+(98+1)+25=923+99+25=1047.
+$$
+
+- **Implementation distinction**: the fixture's counts mirror the paper so the closures can be exercised without the private data. Any exception becomes `halted == True`; the defect-selection consequence is left to Task 15.
+
+### Task 14 — `run_study`
+
+- **Inputs**: `files`, `unadjusted`, `adjusted`, `preserved_rows`, the historical artifacts `native_oos_checkpoint`, `outcome_filtered_catalog`, `run_report_totals`, `run_report_rounds`, `collector_a`, `collector_b`; `config`; `stages`; `halt_on_failure`.
+- **Process**: the top-level, end-to-end orchestrator. It checks the request's topological closure under `STAGE_DEPENDENCIES`, then dispatches the requested stages in the pinned `STAGE_ORDER` (`validate`, `cleanse`, `custody`, `identity`, `calendar`, `labels`, `dsl`, `freeze`, `score`, `aggregate`, `reference`, `dual_check`, `correction`) through `STAGE_CALLABLES`, threading prior payloads with `_stage_arguments`.
+- **Outputs**: the frozen `StudyResult`, with `stages_halt`, `stages_output`, the terminal block verdicts, the claim register and the admissibility report.
+- **Transformation**: thirteen stage payloads become one immutable result. The historical artifacts are passed to the closure checks of the Section 4 and Section 5 counters.
+- **Research role**: composes the full-cohort reanalysis and the audits of "a mean over kept candidates ... compared with a mean of per-round maxima" and of the catalog that "explicitly drops records with $\text{OOS Sharpe} \le 0$".
+- **Equations**: the two metric grains the paper separates, and the retention closure:
+
+$$
+\mathbb{E}\left[S\mid d(e)=1\right]\ne\frac{1}{20}\sum_{r=1}^{20}\max_{e\in\mathcal{O}_r}S(e),\qquad 2016=1648+368,\qquad 1837=1648+189.
+$$
+
+- **Implementation distinction**: an unclosed request stamps all thirteen stages and runs none. With `halt_on_failure` true, later stages are stamped `PIPELINE_HALTED_AT_<stage>`. In the current code the closure helper accepts `collector_a` and `collector_b` but does not read them, so the collector-derived operands are not yet computed.
+
+### Task 15 — `run_sensitivity_task_15`
+
+- **Inputs**: `study_result` (Task 14's `StudyResult`, duck-typed), `config` (supplies the pins 20 valid dates, 480 full-coverage dates and the $10^{-12}$ near-zero threshold), `variant_specs` (ordered specs, each with a `name` and an optional `patch`).
+- **Process**: refuses malformed, unregistered or duplicate names before anything runs, then executes each variant against an attribute-preserving view of the primary result. Each variant is re-run for determinism and checked with the ledger closure battery.
+- **Outputs**: the frozen `SensitivityReport`: `SENSITIVITY_REPORT` (one row per `(variant_name, quantity)`), `SENSITIVITY_HASH`, `VARIANT_RUNS` (one record per variant), `claim_register`, `archive_manifest`.
+- **Transformation**: one primary result and five pinned variants become paired primary and variant values with a delta, a tolerance class and an interpretation.
+- **Research role**: extends the paper's correction protocol ("All 1,047 records are then re-evaluated, rather than rerunning only promising failures") by re-running the ledger under declared alternative choices, including whether the corrected defect fell preferentially on high- or low-signal records.
+- **Equations**: the five pinned variants are `variant_state_precedence_reversed`, `variant_dedup_string_equality`, `variant_dedup_negation_push_through`, `variant_sign_classification_tolerance` and `variant_defect_selection_consequence`. Each reports, per quantity $q$:
+
+$$
+\Delta_q=q^{\mathrm{variant}}-q^{\mathrm{primary}}.
+$$
+
+- **Implementation distinction**: a variant that fails its determinism or closure check keeps its run record and emits no report rows. `SENSITIVITY_HASH` is the SHA-256 of the canonical JSON of the columns and rows.
+
+### Task 16 — `run_task_16`
+
+- **Inputs**: `scratch_dir`, `study_output_text`, `whitelist`, `claim_records`, `dependency_bundles`, `freeze_cohort` (`ordered_id_list`, `cohort_hash`, `freeze_timestamp`).
+- **Process**: Step 1 derives the seventeen-control enumeration and the governance register (control completeness, prohibited-phrase scan, verbatim anticipated-violation check). Step 2 asserts the `tieredclaim` macro/record bijection and the bare-literal halt, audits the disclosure gaps and assigns tiers. Step 3 writes the eight-artifact deposit and its `MANIFEST.json`. Step 4 recomputes record digests before release.
+- **Outputs**: `claim_register`, `manifest_path`, `manifest_sha256`, `governance_declaration`, `claim_tiers`, `dependency_bundles`, `governance_register`, `tier_stamps`, `disclosure_audit`, `redistributable_deposit`, `terminal_verdict`.
+- **Transformation**: study text becomes tier-stamped claim records with position-bound SHA-256 digests, and an archived, partly redistributable deposit.
+- **Research role**: implements the Ethics Statement ("the SDK license is not a data-redistribution grant"; "Model labels are reported with provenance limits") and the paper's restraint that results "do not identify an architecture effect".
+- **Equations**: the tier map assigned under the honest default:
+
+$$
+\mathrm{T1}\mapsto\text{inadmissible},\quad \mathrm{T2}\mapsto\text{inadmissible},\quad \mathrm{T3}\mapsto\text{reproduction},\quad \mathrm{T4}\mapsto\text{reconstruction}.
+$$
+
+- **Implementation distinction**: without `freeze_cohort` the first artifact is written as an explicit UNAVAILABLE document, the deposit is incomplete and the verdict is not certified. A digest mismatch raises `Task16GovernanceError`.
