@@ -242,8 +242,8 @@ The notebook works through the paper in six phases.
 The diagram below illustrates the Inputs, Processes and Outputs (IPOs) of the implemented approach:
 
 <div align="center">
-  <a href="https://github.com/chirindaopensource/auditing_LLM_alpha_factor_mining/blob/main/auditing_LLM_alpha_factor_mining_ipo_main_2.png">
-    <img src="https://raw.githubusercontent.com/chirindaopensource/auditing_LLM_alpha_factor_mining/main/auditing_LLM_alpha_factor_mining_ipo_main_2.png" alt="Inputs, processes and outputs of the evidence-admissibility audit pipeline" width="100%">
+  <a href="https://github.com/chirindaopensource/auditing_LLM_alpha_factor_mining/blob/main/auditing_LLM_alpha_factor_mining_ipo_main_1.png">
+    <img src="https://raw.githubusercontent.com/chirindaopensource/auditing_LLM_alpha_factor_mining/main/auditing_LLM_alpha_factor_mining_ipo_main_1.png" alt="Inputs, processes and outputs of the evidence-admissibility audit pipeline" width="100%">
   </a>
 </div>
 
