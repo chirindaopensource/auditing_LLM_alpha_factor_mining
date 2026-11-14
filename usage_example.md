@@ -1652,6 +1652,8 @@ Block verdicts: 32 of 32 hold
 
 Reading the output:
 
+> **Remediation note (R1–R6).** The outputs recorded below come from the notebook *before* the remediation. Since then, `correction_partition` is computed from this run's own v1/v2 registers: the fixture route has been removed, and Step 6's recount is what the correction stage itself reports. The v1 ledger carries an explicit `evaluation_error` outcome. The extended DSL now supports the 25 synthetic "unsupported" expressions. Pass `freeze_attestation` to `run_study`, or the pre-outcome immutability gate is reported as not established and the run is not admissible. See the remediation log in the notebook and the README.
+
 - **Every stage passed** and every P42/P44 closure holds, so the run reports `PRODUCTION` and `admissible=True`.
 - **The ledger** under the primary precedence is 770 scorable, 252 insufficient and 25 unsupported, with $770 + 252 + 25 = 1047$: no record is dropped and none is assigned a zero score. The 57 conditionals that v1 cannot evaluate sit in the insufficient arm. Under the reversed precedence the unsupported records move to insufficient.
 - **The references** each have 480 valid dates: the label-available sessions of 2024 to 2025, $485 - 5 = 480$.
