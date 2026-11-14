@@ -1,0 +1,61 @@
+# =============================================================================
+#
+#  Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort
+#  Reanalysis -- Python Requirements
+#
+#  Pinned third-party dependencies of the notebook
+#  auditing_LLM_alpha_factor_mining_draft.ipynb, an independent implementation
+#  of "Auditing LLM Alpha-Factor Mining: Metric Provenance and Full-Cohort
+#  Reanalysis" by Yufeng He (2026). The notebook re-scores a frozen,
+#  IS-screened cohort of 1,047 LLM-mined alpha factors on public A-share
+#  data, conserves the full denominator through a versioned operator
+#  correction, and stamps every claim with its evidentiary tier.
+#
+#  Scope of this file:
+#  • Every third-party distribution the notebook's import cell needs:
+#    numpy, pandas (including pandas.api.types) and pyarrow
+#  • The runtime dependencies pandas and zoneinfo need on every platform:
+#    python-dateutil, pytz and tzdata (the IANA database for Asia/Shanghai;
+#    Windows ships none)
+#  • PyYAML, used only by the usage example to read config.yaml
+#  • Jupyter Notebook and the IPython kernel, to open and run the notebook
+#  • Optional style tools, commented out
+#
+#  Everything else the notebook imports is the Python standard library:
+#  ast, collections, copy, dataclasses, datetime, decimal, hashlib,
+#  importlib, inspect, json, logging, math, numbers, os, pathlib, re,
+#  shutil, sys, tempfile, types, typing, uuid and zoneinfo.
+#
+#  Versions are those of the verified environment (Python 3.13.9).
+#
+#  Paper Reference:
+#  He, Y. (2026). Auditing LLM Alpha-Factor Mining: Metric Provenance and
+#  Full-Cohort Reanalysis. arXiv preprint arXiv:2610.29500.
+#  https://arxiv.org/abs/2610.29500
+#
+#  Author: CS Chirinda
+#  License: MIT
+#  Version: 1.0.0
+#
+# =============================================================================
+
+# Core numerical stack (imported by the notebook)
+numpy==2.3.5
+pandas==2.3.3
+pyarrow==21.0.0
+
+# Runtime dependencies of pandas and of zoneinfo("Asia/Shanghai")
+python-dateutil==2.9.0.post0
+pytz==2025.2
+tzdata==2025.2
+
+# Usage example only: reading config.yaml
+PyYAML==6.0.3
+
+# Notebook environment
+notebook==7.4.5
+ipykernel==6.31.0
+
+# Optional: style checks used to verify the code blocks
+# pycodestyle
+# black
